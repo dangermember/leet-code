@@ -14,7 +14,7 @@ abstract class ProblemService
      *
      * @return \Illuminate\Database\Eloquent\Collection<int, Problem>|Collection<int, \stdClass>
      */
-    public static function getAll()
+    public static function getAll(): \Illuminate\Database\Eloquent\Collection|Collection
     {
         return Problem::get();
     }
@@ -25,7 +25,7 @@ abstract class ProblemService
      * @param  mixed  $pageSize
      * @return LengthAwarePaginator<int, Problem>
      */
-    public static function getPageinated($pageSize = 10)
+    public static function getPageinated($pageSize = 10): LengthAwarePaginator
     {
         return Problem::latest()->paginate($pageSize);
     }
@@ -35,7 +35,7 @@ abstract class ProblemService
      *
      * @return \Illuminate\Database\Eloquent\Collection<int, Problem>|Collection<int, \stdClass>
      */
-    public static function groupByDifficulty()
+    public static function groupByDifficulty(): \Illuminate\Database\Eloquent\Collection|Collection
     {
         $total = Problem::count();
 
@@ -49,7 +49,7 @@ abstract class ProblemService
      *
      * @return \Illuminate\Database\Eloquent\Collection<int, string>
      */
-    public static function groupByTopic()
+    public static function groupByTopic(): \Illuminate\Database\Eloquent\Collection
     {
         $total = Problem::count();
 
