@@ -3,18 +3,18 @@
 namespace App\Services;
 
 use App\Models\Problem;
+use App\Models\Topic;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 abstract class ProblemService
 {
     /**
      * List all problems
      *
-     * @return \Illuminate\Database\Eloquent\Collection<int, Problem>|Collection<int, \stdClass>
+     * @return Collection<int, Problem>
      */
-    public static function getAll(): \Illuminate\Database\Eloquent\Collection|Collection
+    public static function getAll(): Collection
     {
         return Problem::get();
     }
@@ -33,34 +33,36 @@ abstract class ProblemService
     /**
      * List all difficlties percentage in problems
      *
-     * @return \Illuminate\Database\Eloquent\Collection<int, Problem>|Collection<int, \stdClass>
+     * @return Collection<int, string>
      */
-    public static function groupByDifficulty(): \Illuminate\Database\Eloquent\Collection|Collection
+    public static function groupByDifficulty(): Collection
     {
         $total = Problem::count();
 
         return Problem::selectRaw("difficulty as label, COUNT(*)*100/{$total} as value")
             ->groupBy('difficulty')
-            ->get();
+            ->orderByDesc('value')
+            ->orderBy('label')
+            ->limit(6)
+            ->get(['label', 'value']);
     }
 
     /**
      * List all topics percentage in problems
      *
-     * @return \Illuminate\Database\Eloquent\Collection<int, string>
+     * @return Collection<int, string>
      */
-    public static function groupByTopic(): \Illuminate\Database\Eloquent\Collection
+    public static function groupByTopic(): Collection
     {
         $total = Problem::count();
 
-        return DB::table('topics')
-            ->selectRaw("topics.name as label, COUNT(problem_topic.problem_id)*100/{$total} as value")
+        return Topic::selectRaw("topics.name as label, COUNT(problem_topic.problem_id)*100/{$total} as value")
             ->join('problem_topic', 'topics.id', '=', 'problem_topic.topic_id')
             ->groupBy('topics.name')
             ->orderByDesc('value')
             ->orderBy('label')
             ->limit(6)
-            ->get();
+            ->get(['label', 'value']);
     }
 
     /**
