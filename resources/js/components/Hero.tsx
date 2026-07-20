@@ -30,7 +30,6 @@ export default function Hero({ totalSolved, avgRuntime, avgMemory }: Readonly<He
                         <div className="rounded-3xl bg-white/5 p-5 ring-1 ring-white/10">
                             <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Average runtime</p>
                             <p className="mt-2 text-3xl font-semibold text-white">{avgRuntime}</p>
-                            <p className="mt-1 text-sm text-slate-400">Based on problems with runtime data</p>
                         </div>
                         <div className="rounded-3xl bg-slate-900/80 p-4 ring-1 ring-white/10">
                             <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Average memory</p>
