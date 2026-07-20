@@ -55,5 +55,19 @@ abstract class ProblemService
             ->limit(6)
             ->get();
     }
-    
+    /**
+     * Get Average Runtime
+     */
+    public static function getAverageRuntime()
+    {
+        return Problem::where('runtime', '>', 0)->avg('runTime');
+    }
+    /**
+     * Get Average Memory
+     */
+    public static function getAvgMemory()
+    {
+        return Problem::where('memory', '>', 0)->avg('memory');
+    }
+
 }
