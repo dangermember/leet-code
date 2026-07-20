@@ -50,6 +50,9 @@ abstract class ProblemService
             ->selectRaw("topics.name as label, COUNT(problem_topic.problem_id)*100/{$total} as value")
             ->join('problem_topic', 'topics.id', '=', 'problem_topic.topic_id')
             ->groupBy('topics.name')
+            ->orderByDesc('value')
+            ->orderBy('label')
+            ->limit(6)
             ->get();
     }
     
