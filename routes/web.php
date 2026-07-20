@@ -17,9 +17,12 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/problems', function () {
-    $problems = ProblemService::getPageinated(12);
+    $problems = ProblemService::getPageinated(9);
     return Inertia::render('Problems', [
-        'problems' => $problems,
+        'problems' => [
+            'data' => $problems->items(),
+            'meta' => Arr::except($problems->toArray(), ['data'])
+        ],
     ]);
 })->name('problems');
 

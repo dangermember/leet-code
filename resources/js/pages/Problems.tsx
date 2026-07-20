@@ -36,17 +36,24 @@ export default function Problems() {
                         ))}
                     </div>
 
-                    <div className="my-8 flex items-center justify-center">
-                        <nav className="inline-flex items-center gap-2 rounded-md bg-slate-900/70 p-2">
+                    <div className="my-8 text-center">
+                        <nav className="inline-flex flex-wrap items-center justify-center gap-2 rounded-md bg-slate-900/70 p-2">
                             {problems?.meta?.links?.map((link: any, idx: number) => (
-                                <Link
-                                    key={idx}
-                                    href={link.url ?? '#'}
-                                    className={`px-3 py-1 text-sm ${link.active ? 'bg-sky-500 text-slate-900 rounded' : 'text-slate-300'}`}
-                                    as={link.url ? undefined : 'span'}
-                                >
-                                    <span dangerouslySetInnerHTML={{ __html: link.label }} />
-                                </Link>
+                                link.url ? (
+                                    <Link
+                                        key={`${link.label}-${idx}`}
+                                        href={link.url}
+                                        className={`px-3 py-1 text-sm ${link.active ? 'bg-sky-500 text-slate-900 rounded' : 'text-slate-300'}`}
+                                    >
+                                        <span dangerouslySetInnerHTML={{ __html: link.label }} />
+                                    </Link>
+                                ) : (
+                                    <span
+                                        key={`${link.label}-${idx}`}
+                                        className="px-3 py-1 text-sm text-slate-500"
+                                        dangerouslySetInnerHTML={{ __html: link.label }}
+                                    />
+                                )
                             ))}
                         </nav>
                     </div>
