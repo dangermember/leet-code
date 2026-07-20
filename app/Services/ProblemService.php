@@ -3,13 +3,16 @@
 namespace App\Services;
 
 use App\Models\Problem;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 abstract class ProblemService
 {
     /**
      * List all problems
-     * @return \Illuminate\Database\Eloquent\Collection<int, Problem>|\Illuminate\Support\Collection<int, \stdClass>
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, Problem>|Collection<int, \stdClass>
      */
     public static function getAll()
     {
@@ -18,8 +21,9 @@ abstract class ProblemService
 
     /**
      * List all problems paginated with size Pagesize
-     * @param mixed $pageSize
-     * @return \Illuminate\Pagination\LengthAwarePaginator<int, Problem>
+     *
+     * @param  mixed  $pageSize
+     * @return LengthAwarePaginator<int, Problem>
      */
     public static function getPageinated($pageSize = 10)
     {
@@ -28,11 +32,13 @@ abstract class ProblemService
 
     /**
      * List all difficlties percentage in problems
-     * @return \Illuminate\Database\Eloquent\Collection<int, Problem>|\Illuminate\Support\Collection<int, \stdClass>
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, Problem>|Collection<int, \stdClass>
      */
     public static function groupByDifficulty()
     {
         $total = Problem::count();
+
         return Problem::selectRaw("difficulty as label, COUNT(*)*100/{$total} as value")
             ->groupBy('difficulty')
             ->get();
@@ -40,6 +46,7 @@ abstract class ProblemService
 
     /**
      * List all topics percentage in problems
+     *
      * @return \Illuminate\Database\Eloquent\Collection<int, string>
      */
     public static function groupByTopic()
@@ -55,6 +62,7 @@ abstract class ProblemService
             ->limit(6)
             ->get();
     }
+
     /**
      * Get Average Runtime
      */
@@ -62,6 +70,7 @@ abstract class ProblemService
     {
         return Problem::where('runtime', '>', 0)->avg('runTime');
     }
+
     /**
      * Get Average Memory
      */
@@ -69,5 +78,4 @@ abstract class ProblemService
     {
         return Problem::where('memory', '>', 0)->avg('memory');
     }
-
 }

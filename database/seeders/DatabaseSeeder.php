@@ -18,6 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         Topic::truncate();
         Problem::truncate();
-        (new ProblemsSeeder())->run();
+        (new ProblemsSeeder)->run();
     }
 }
