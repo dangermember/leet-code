@@ -12,7 +12,7 @@ type Props = {
     passwordRules: string;
 };
 
-export default function Security(props: Props) {
+export default function Security(props: Readonly<Props>) {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
