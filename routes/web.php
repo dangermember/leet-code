@@ -16,6 +16,13 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/problems', function () {
+    $problems = ProblemService::getPageinated(12);
+    return Inertia::render('Problems', [
+        'problems' => $problems,
+    ]);
+})->name('problems');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 });
