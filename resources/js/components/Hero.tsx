@@ -15,8 +15,8 @@ export default function Hero({ totalSolved, avgRuntime, avgMemory }: Readonly<He
                         <Sparkles className="mr-2 h-4 w-4" /> LeetCode Achievements
                     </p>
                     <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">My LeetCode portfolio</h1>
-                    <p className="mt-4 max-w-xl text-slate-300 sm:text-lg">
-                        A polished showcase of algorithm achievements, performance metrics, and problem insights designed for recruiters and development teams.
+                    <p className="mt-4 text-slate-300 sm:text-lg">
+                        Showcasing algorithmic excellence through optimized solutions, performance benchmarks, and technical insights that highlight real-world problem-solving ability.
                     </p>
                 </div>
 
