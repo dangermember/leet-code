@@ -17,6 +17,8 @@ class Problem extends Model
         'title',
         'description',
         'solution',
+        'runtime',
+        'memory',
     ];
 
     protected $casts = [
