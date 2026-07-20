@@ -15,12 +15,17 @@ class ProblemsSeeder extends Seeder
         $path = database_path('data/problems.json');
 
         if (! file_exists($path)) {
-            $this->command->warn('Problems JSON file not found at '.$path);
+            $this->command->warn("Problems JSON file not found at $path");
 
             return;
         }
+        $json = file_get_contents($path);
+        if ($json === false) {
+            $this->command->warn("Invalid json in file $path.");
 
-        $problems = json_decode(file_get_contents($path), true);
+            return;
+        }
+        $problems = json_decode($json, true);
 
         foreach ($problems as $problemData) {
             $problem = Problem::create([
