@@ -9,10 +9,17 @@ Route::get('/', function () {
     $problems = ProblemService::getPageinated(9);
     $difficulty = ProblemService::groupByDifficulty();
     $topics = ProblemService::groupByTopic();
+    $avgRuntime = ProblemService::getAverageRuntime() . " ms";
+    $avgMemory = ProblemService::getAvgMemory() . " MB";
     return Inertia::render('Welcome', [
-        'problems' => $problems,
+        'problems' => [
+            'data' => $problems->items(),
+            'meta' => Arr::except($problems->toArray(), ['data'])
+        ],
         'difficulty' => $difficulty,
         'topics' => $topics,
+        'avgRuntime' => $avgRuntime,
+        'avgMemory' => $avgMemory,
     ]);
 })->name('home');
 

@@ -12,24 +12,16 @@ import { ChartSegment } from '@/types/ChartSegment';
 export default function Welcome() {
     const { props } = usePage();
     const problems = props.problems as PaginatedResponse<problem>;
+    const totalSolved = problems?.meta?.total ?? 0;
     const difficulty = props.difficulty as ChartSegment[];
     const topics = props.topics as ChartSegment[];
+    const avgRuntime = props.avgRuntime as string;
+    const avgMemory = props.avgMemory as string;
     const [open, setOpen] = useState(false);
     const [solution, setSolution] = useState('');
     const [runtimeVal, setRuntimeVal] = useState<number | null>(null);
     const [memoryVal, setMemoryVal] = useState<number | null>(null);
     const [activeTitle, setActiveTitle] = useState('');
-
-    const totalSolved = problems?.meta?.total ?? problems?.data?.length ?? 0;
-    const runtimeProblems = problems?.data?.filter((p) => p.runtime != null) ?? [];
-    const memoryProblems = problems?.data?.filter((p) => p.memory != null) ?? [];
-
-    const avgRuntime = runtimeProblems.length
-        ? `${Math.round(runtimeProblems.reduce((sum, p) => sum + (p.runtime ?? 0), 0) / runtimeProblems.length)} ms`
-        : '—';
-    const avgMemory = memoryProblems.length
-        ? `${Math.round(memoryProblems.reduce((sum, p) => sum + (p.memory ?? 0), 0) / memoryProblems.length)} MB`
-        : '—';
 
     function showSolution(text: string, title: string, runtime?: number | null, memory?: number | null) {
         setSolution(text);
