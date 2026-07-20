@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    $problems = ProblemService::getPageinated(10);
+    $problems = ProblemService::getPageinated(9);
     $difficulty = ProblemService::groupByDifficulty();
     $topics = ProblemService::groupByTopic();
     return Inertia::render('Welcome', [
