@@ -22,7 +22,7 @@ export default function Hero({ totalSolved, avgRuntime, avgMemory }: Readonly<He
 
                 <div className="rounded-3xl bg-slate-950/80 p-6 text-slate-200 ring-1 ring-white/5">
                     <p className="text-sm uppercase tracking-[0.18em] text-slate-500">Performance summary</p>
-                    <div className="mt-6 grid grid-cols-3 gap-4">
+                    <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="rounded-3xl bg-white/5 p-5 ring-1 ring-white/10">
                             <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Problems solved</p>
                             <p className="mt-2 text-3xl font-semibold text-white">{totalSolved}</p>
