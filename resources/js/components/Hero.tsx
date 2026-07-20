@@ -9,7 +9,7 @@ interface HeroProps {
 export default function Hero({ totalSolved, avgRuntime, avgMemory }: Readonly<HeroProps>) {
     return (
         <section className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-xl">
-            <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+            <div className="grid gap-8 lg:items-center">
                 <div>
                     <p className="mb-3 inline-flex items-center rounded-full bg-sky-500/10 px-3 py-1 text-sm font-semibold uppercase tracking-[0.18em] text-sky-300">
                         <Sparkles className="mr-2 h-4 w-4" /> LeetCode Achievements
@@ -18,7 +18,11 @@ export default function Hero({ totalSolved, avgRuntime, avgMemory }: Readonly<He
                     <p className="mt-4 max-w-xl text-slate-300 sm:text-lg">
                         A polished showcase of algorithm achievements, performance metrics, and problem insights designed for recruiters and development teams.
                     </p>
-                    <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                </div>
+
+                <div className="rounded-3xl bg-slate-950/80 p-6 text-slate-200 ring-1 ring-white/5">
+                    <p className="text-sm uppercase tracking-[0.18em] text-slate-500">Performance summary</p>
+                    <div className="mt-6 grid grid-cols-3 gap-4">
                         <div className="rounded-3xl bg-white/5 p-5 ring-1 ring-white/10">
                             <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Problems solved</p>
                             <p className="mt-2 text-3xl font-semibold text-white">{totalSolved}</p>
@@ -28,17 +32,11 @@ export default function Hero({ totalSolved, avgRuntime, avgMemory }: Readonly<He
                             <p className="mt-2 text-3xl font-semibold text-white">{avgRuntime}</p>
                             <p className="mt-1 text-sm text-slate-400">Based on problems with runtime data</p>
                         </div>
-                    </div>
-                </div>
-
-                <div className="rounded-3xl bg-slate-950/80 p-6 text-slate-200 ring-1 ring-white/5">
-                    <p className="text-sm uppercase tracking-[0.18em] text-slate-500">Performance summary</p>
-                    <div className="mt-6 grid gap-4">
                         <div className="rounded-3xl bg-slate-900/80 p-4 ring-1 ring-white/10">
                             <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Average memory</p>
                             <p className="mt-2 text-2xl font-semibold text-white">{avgMemory}</p>
                         </div>
-                        <div className="rounded-3xl bg-slate-900/80 p-4 ring-1 ring-white/10">
+                        {/* <div className="rounded-3xl bg-slate-900/80 p-4 ring-1 ring-white/10">
                             <div className="flex items-center justify-between gap-4">
                                 <div>
                                     <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Best benchmark</p>
@@ -48,7 +46,7 @@ export default function Hero({ totalSolved, avgRuntime, avgMemory }: Readonly<He
                                     <Sparkles className="h-5 w-5" />
                                 </span>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
