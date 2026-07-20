@@ -16,7 +16,7 @@ type Props = {
     user: User;
 };
 
-export function UserMenuContent({ user }: Props) {
+export function UserMenuContent({ user }: Readonly<Props>) {
     const cleanup = useMobileNavigation();
 
     const handleLogout = () => {
