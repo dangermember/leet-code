@@ -12,54 +12,33 @@ class ProblemsSeeder extends Seeder
      */
     public function run(): void
     {
-        $problem = Problem::create([
-            'number' => 1260,
-            'url' => 'https://leetcode.com/problems/shift-2d-grid/description/',
-            'title' => 'Shift 2D Grid',
-            'difficulty' => 'Easy',
-            'description' => <<<'EOD'
-Given a 2D grid of size m x n and an integer k. You need to shift the grid k times.
+        $path = database_path('data/problems.json');
 
-In one shift operation:
+        if (!file_exists($path)) {
+            $this->command->warn('Problems JSON file not found at ' . $path);
 
-Element at grid[i][j] moves to grid[i][j + 1].
-Element at grid[i][n - 1] moves to grid[i + 1][0].
-Element at grid[m - 1][n - 1] moves to grid[0][0].
-Return the 2D grid after applying shift operation k times.
-EOD,
-            'solution' => <<<'EOD'
-<?php
-class Solution {
-    public function shiftGrid($grid, $k) {
-        $m = count($grid);
-        $n = count($grid[0]);
-        $total = $m * $n;
-        $output = array_fill(0, $m, array_fill(0, $n, 0));
-        for($i = 0;$i < $m;$i++)
-        {
-            for($j = 0;$j < $n;$j++)
-            {
-                $newPositionFixed = ($i * $n + $j + $k) % $total;
-                $output[intDiv($newPositionFixed, $n)][$newPositionFixed % $n] = $grid[$i][$j];
-            }
+            return;
         }
-        return $output;
-    }
-}
-EOD,
-            'runtime' => '3',
-            'memory' => '20.7',
-        ]);
-        $topicNames = [
-            'Mid Level',
-            'Array',
-            'Martrix',
-            'Simulation',
-        ];
-        foreach ($topicNames as $topicName) {
-            $problem->topics()->firstOrCreate([
-                'name' => $topicName,
+
+        $problems = json_decode(file_get_contents($path), true);
+
+        foreach ($problems as $problemData) {
+            $problem = Problem::create([
+                'number' => $problemData['number'],
+                'url' => $problemData['url'],
+                'title' => $problemData['title'],
+                'difficulty' => $problemData['difficulty'],
+                'description' => $problemData['description'],
+                'solution' => $problemData['solution'],
+                'runtime' => $problemData['runtime'],
+                'memory' => $problemData['memory'],
             ]);
+
+            foreach ($problemData['topicNames'] ?? [] as $topicName) {
+                $problem->topics()->firstOrCreate([
+                    'name' => $topicName,
+                ]);
+            }
         }
     }
 }
