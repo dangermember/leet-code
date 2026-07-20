@@ -28,7 +28,6 @@ abstract class ProblemService
             ->paginate($pageSize);
     }
 
-    
     /**
      * @return Collection<int, \stdClass>
      */
