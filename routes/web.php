@@ -8,9 +8,11 @@ use Inertia\Inertia;
 Route::get('/', function () {
     $problems = ProblemService::getPageinated(10);
     $difficulty = ProblemService::groupByDifficulty();
+    $topics = ProblemService::groupByTopic();
     return Inertia::render('Welcome', [
         'problems' => $problems,
         'difficulty' => $difficulty,
+        'topics' => $topics,
     ]);
 })->name('home');
 
