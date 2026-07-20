@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Topic;
 
 class Problem extends Model
 {
@@ -25,4 +26,9 @@ class Problem extends Model
     protected $casts = [
         'number' => 'integer',
     ];
+
+    public function topics()
+    {
+        return $this->belongsToMany(Topic::class, 'problem_topic', 'problem_id', 'topic_id');
+    }
 }
