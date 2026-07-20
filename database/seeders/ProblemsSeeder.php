@@ -14,8 +14,8 @@ class ProblemsSeeder extends Seeder
     {
         $path = database_path('data/problems.json');
 
-        if (!file_exists($path)) {
-            $this->command->warn('Problems JSON file not found at ' . $path);
+        if (! file_exists($path)) {
+            $this->command->warn('Problems JSON file not found at '.$path);
 
             return;
         }

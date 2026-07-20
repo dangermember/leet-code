@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Problem;
 use Database\Seeders\ProblemsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -8,7 +9,7 @@ uses(RefreshDatabase::class);
 test('the problems seeder loads problems from the json data file', function () {
     $this->seed(ProblemsSeeder::class);
 
-    $problem = \App\Models\Problem::where('number', 1260)->first();
+    $problem = Problem::where('number', 1260)->first();
 
     expect($problem)->not->toBeNull()
         ->and($problem->title)->toBe('Shift 2D Grid')
