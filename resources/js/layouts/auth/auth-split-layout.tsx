@@ -7,7 +7,7 @@ export default function AuthSplitLayout({
     children,
     title,
     description,
-}: AuthLayoutProps) {
+}: Readonly<AuthLayoutProps>) {
     const { name } = usePage().props;
 
     return (
