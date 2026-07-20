@@ -66,7 +66,7 @@ abstract class ProblemService
     /**
      * Get Average Runtime
      */
-    public static function getAverageRuntime()
+    public static function getAverageRuntime(): mixed
     {
         return Problem::where('runtime', '>', 0)->avg('runTime');
     }
@@ -74,7 +74,7 @@ abstract class ProblemService
     /**
      * Get Average Memory
      */
-    public static function getAvgMemory()
+    public static function getAvgMemory(): mixed
     {
         return Problem::where('memory', '>', 0)->avg('memory');
     }

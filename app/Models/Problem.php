@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Problem extends Model
 {
-    use HasFactory;
-
     protected $table = 'problems';
 
     protected $fillable = [
@@ -26,7 +24,10 @@ class Problem extends Model
         'number' => 'integer',
     ];
 
-    public function topics()
+    /**
+     * @return BelongsToMany<Topic, $this>
+     */
+    public function topics(): BelongsToMany
     {
         return $this->belongsToMany(Topic::class, 'problem_topic', 'problem_id', 'topic_id');
     }

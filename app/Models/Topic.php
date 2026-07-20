@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Topic extends Model
 {
-    use HasFactory;
-
     protected $table = 'topics';
 
     protected $fillable = [
@@ -16,7 +15,10 @@ class Topic extends Model
         'slug',
     ];
 
-    public function problems()
+    /**
+     * @return BelongsToMany<Problem, $this, Pivot, 'pivot'>
+     */
+    public function problems(): BelongsToMany
     {
         return $this->belongsToMany(Problem::class, 'problem_topic', 'topic_id', 'problem_id');
     }
