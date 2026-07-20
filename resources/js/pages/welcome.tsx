@@ -4,7 +4,6 @@ import Hero from '@/components/Hero';
 import AchievementCards from '@/components/AchievementCards';
 import DifficultyChart from '@/components/DifficultyChart';
 import TopicChart from '@/components/TopicChart';
-import ProblemFilters from '@/components/ProblemFilters';
 import SolutionModal from '@/components/SolutionModal';
 import Footer from '@/components/Footer';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
@@ -15,6 +14,7 @@ export default function Welcome() {
     const { props } = usePage();
     const problems = props.problems as PaginatedResponse<problem>;
     const difficulty = props.difficulty as ChartSegment[];
+    const topics = props.topics as ChartSegment[];
     const [open, setOpen] = useState(false);
     const [solution, setSolution] = useState('');
     const [runtimeVal, setRuntimeVal] = useState<number | null>(null);
@@ -48,7 +48,7 @@ export default function Welcome() {
                     <Hero totalSolved={totalSolved} avgRuntime={avgRuntime} avgMemory={avgMemory} />
                     <div className="my-10 grid gap-6 lg:grid-cols-2">
                         <DifficultyChart segments={difficulty} />
-                        <TopicChart />
+                        <TopicChart segments={topics} />
                     </div>
 
                     <div className="my-10">
@@ -61,9 +61,6 @@ export default function Welcome() {
                                     </div>
                                     <p className="text-sm text-slate-500">My latest submissions and performance metrics.</p>
                                 </div>
-                                <aside className="my-6">
-                                    <ProblemFilters totalSolved={totalSolved} />
-                                </aside>
                                 <AchievementCards problems={problems?.data ?? []} onShowSolution={showSolution} />
                             </section>
 

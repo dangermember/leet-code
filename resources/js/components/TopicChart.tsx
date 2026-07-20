@@ -1,21 +1,10 @@
-interface TopicData {
-    topic: string;
-    value: number;
-}
+import { ChartSegment } from "@/types/ChartSegment";
 
 interface TopicChartProps {
-    topics?: TopicData[];
+    segments?: ChartSegment[];
 }
 
-const defaultTopics: TopicData[] = [
-    { topic: 'Arrays', value: 32 },
-    { topic: 'Graphs', value: 18 },
-    { topic: 'Dynamic Programming', value: 25 },
-    { topic: 'Strings', value: 15 },
-    { topic: 'Trees', value: 10 },
-];
-
-export default function TopicChart({ topics = defaultTopics }: TopicChartProps) {
+export default function TopicChart({ segments }: Readonly<TopicChartProps>) {
     return (
         <section className="rounded-3xl border border-white/10 bg-slate-900/80 p-6 text-slate-200 ring-1 ring-white/5">
             <div className="mb-4 flex items-center justify-between">
@@ -25,10 +14,10 @@ export default function TopicChart({ topics = defaultTopics }: TopicChartProps) 
                 </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
-                {topics.map((topic) => (
-                    <div key={topic.topic} className="rounded-3xl bg-slate-950/80 p-4 ring-1 ring-white/10">
-                        <p className="text-sm text-slate-400">{topic.topic}</p>
-                        <p className="mt-3 text-2xl font-semibold text-white">{topic.value}%</p>
+                {segments?.map((topic) => (
+                    <div key={topic.label} className="rounded-3xl bg-slate-950/80 p-4 ring-1 ring-white/10">
+                        <p className="text-sm text-slate-400">{topic.label}</p>
+                        <p className="mt-3 text-xl font-semibold text-white">{topic.value}%</p>
                     </div>
                 ))}
             </div>
