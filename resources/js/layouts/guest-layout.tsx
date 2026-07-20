@@ -6,6 +6,11 @@ import AppLogoIcon from '@/components/app-logo-icon';
 import Footer from '@/components/Footer';
 import { home, problems } from '@/routes';
 
+const menuLinks = [
+    { label: 'Home', href: home() },
+    { label: 'Problems', href: problems() },
+];
+
 export default function GuestLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -28,18 +33,15 @@ export default function GuestLayout({
 
                         {/* Desktop navigation */}
                         <nav className="hidden items-center gap-6 text-sm font-medium text-slate-300 md:flex">
-                            <Link
-                                href={home()}
-                                className="transition hover:text-white"
-                            >
-                                Home
-                            </Link>
-                            <Link
-                                href={problems()}
-                                className="transition hover:text-white"
-                            >
-                                Problems
-                            </Link>
+                            {menuLinks.map((link, index) => (
+                                <Link
+                                    key={"nav" + index}
+                                    href={link.href}
+                                    className="transition hover:text-white"
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
                         </nav>
 
                         {/* Mobile menu button */}
@@ -60,20 +62,16 @@ export default function GuestLayout({
                     {/* Mobile navigation */}
                     {open && (
                         <nav className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4 md:hidden">
-                            <Link
-                                href={home()}
-                                className="rounded-md px-3 py-2 transition hover:bg-white/10"
-                                onClick={() => setOpen(false)}
-                            >
-                                Home
-                            </Link>
-                            <Link
-                                href={problems()}
-                                className="rounded-md px-3 py-2 transition hover:bg-white/10"
-                                onClick={() => setOpen(false)}
-                            >
-                                Problems
-                            </Link>
+                            {menuLinks.map((link, index) => (
+                                <Link
+                                    key={"nav" + index}
+                                    href={link.href}
+                                    className="rounded-md px-3 py-2 transition hover:bg-white/10"
+                                    onClick={() => setOpen(false)}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
                         </nav>
                     )}
                 </div>
