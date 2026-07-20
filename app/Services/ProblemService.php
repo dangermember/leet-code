@@ -3,81 +3,77 @@
 namespace App\Services;
 
 use App\Models\Problem;
-use App\Models\Topic;
-use Illuminate\Database\Eloquent\Collection;
+use DB;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 abstract class ProblemService
 {
     /**
-     * List all problems
-     *
-     * @return Collection<int, Problem>
+     * @return EloquentCollection<int, Problem>
      */
-    public static function getAll(): Collection
+    public static function getAll(): EloquentCollection
     {
-        return Problem::get();
+        return Problem::all();
     }
 
     /**
-     * List all problems paginated with size Pagesize
-     *
-     * @param  mixed  $pageSize
      * @return LengthAwarePaginator<int, Problem>
      */
-    public static function getPageinated($pageSize = 10): LengthAwarePaginator
+    public static function getPaginated(int $pageSize = 10): LengthAwarePaginator
     {
-        return Problem::latest()->paginate($pageSize);
+        return Problem::query()
+            ->latest()
+            ->paginate($pageSize);
     }
 
     /**
-     * List all difficlties percentage in problems
-     *
-     * @return Collection<int, string>
+     * @return Collection<int, \stdClass>
      */
     public static function groupByDifficulty(): Collection
     {
-        $total = Problem::count();
+        $total = max(Problem::count(), 1);
 
-        return Problem::selectRaw("difficulty as label, COUNT(*)*100/{$total} as value")
+        return DB::table('problems')
+            ->select('difficulty as label')
+            ->selectRaw('COUNT(*) * 100 / ? as value', [$total])
             ->groupBy('difficulty')
             ->orderByDesc('value')
             ->orderBy('label')
             ->limit(6)
-            ->get(['label', 'value']);
+            ->get();
     }
 
     /**
-     * List all topics percentage in problems
-     *
-     * @return Collection<int, string>
+     * @return Collection<int, \stdClass>
      */
     public static function groupByTopic(): Collection
     {
-        $total = Problem::count();
+        $total = max(Problem::count(), 1);
 
-        return Topic::selectRaw("topics.name as label, COUNT(problem_topic.problem_id)*100/{$total} as value")
+        return DB::table('topics')
+            ->select('topics.name as label')
+            ->selectRaw('COUNT(problem_topic.problem_id) * 100 / ? as value', [$total])
             ->join('problem_topic', 'topics.id', '=', 'problem_topic.topic_id')
             ->groupBy('topics.name')
             ->orderByDesc('value')
             ->orderBy('label')
             ->limit(6)
-            ->get(['label', 'value']);
+            ->get();
     }
 
-    /**
-     * Get Average Runtime
-     */
-    public static function getAverageRuntime(): mixed
+    public static function getAverageRuntime(): float
     {
-        return Problem::where('runtime', '>', 0)->avg('runTime');
+        return (float) Problem::query()
+            ->where('runtime', '>', 0)
+            ->avg('runtime');
     }
 
-    /**
-     * Get Average Memory
-     */
-    public static function getAvgMemory(): mixed
+    public static function getAvgMemory(): float
     {
-        return Problem::where('memory', '>', 0)->avg('memory');
+        return (float) Problem::query()
+            ->where('memory', '>', 0)
+            ->avg('memory');
     }
 }

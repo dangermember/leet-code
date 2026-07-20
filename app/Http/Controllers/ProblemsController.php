@@ -15,7 +15,7 @@ class ProblemsController extends Controller
      */
     public function index(): LengthAwarePaginator
     {
-        return ProblemService::getPageinated(15);
+        return ProblemService::getPaginated(15);
     }
 
     /**

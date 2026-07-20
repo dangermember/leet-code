@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    $problems = ProblemService::getPageinated(9);
+    $problems = ProblemService::getPaginated(9);
     $difficulty = ProblemService::groupByDifficulty();
     $topics = ProblemService::groupByTopic();
     $avgRuntime = ProblemService::getAverageRuntime().' ms';
@@ -24,7 +24,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/problems', function () {
-    $problems = ProblemService::getPageinated(9);
+    $problems = ProblemService::getPaginated(9);
 
     return Inertia::render('Problems', [
         'problems' => [
