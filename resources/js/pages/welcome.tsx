@@ -9,9 +9,13 @@ export default function Welcome() {
     const problems:PaginatedResponse<problem> = props.problems as PaginatedResponse<problem>;
     const [open, setOpen] = useState(false);
     const [solution, setSolution] = useState('');
+    const [runtimeVal, setRuntimeVal] = useState<number | null>(null);
+    const [memoryVal, setMemoryVal] = useState<number | null>(null);
 
-    function showSolution(text: string) {
+    function showSolution(text: string, runtime?: number | null, memory?: number | null) {
         setSolution(text);
+        setRuntimeVal(runtime ?? null);
+        setMemoryVal(memory ?? null);
         setOpen(true);
     }
 
@@ -45,7 +49,7 @@ export default function Welcome() {
                                     <div className="flex gap-2">
                                         <button
                                             type="button"
-                                            onClick={() => showSolution(p.solution)}
+                                            onClick={() => showSolution(p.solution, p.runtime, p.memory)}
                                             className="rounded bg-gray-800 px-3 py-1 text-white hover:bg-gray-700"
                                         >
                                             Show solution
@@ -70,7 +74,17 @@ export default function Welcome() {
                 {open && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
                         <div className="mx-4 max-w-2xl rounded bg-white p-6 dark:bg-gray-900">
-                            <h2 className="mb-4 text-lg font-semibold">Solution</h2>
+                            <div className="mb-4 flex items-center justify-between">
+                                <h2 className="text-lg font-semibold">Solution</h2>
+                                <div className="flex items-center gap-2">
+                                    <span title={runtimeVal != null ? `Runtime: ${runtimeVal} ms` : 'Runtime unknown'} className="flex items-center gap-1 rounded bg-gray-100 px-2 py-1 text-sm">
+                                        <Clock className="size-4" />{runtimeVal != null ? `${runtimeVal} ms` : '—'}
+                                    </span>
+                                    <span title={memoryVal != null ? `Memory: ${memoryVal} MB` : 'Memory unknown'} className="flex items-center gap-1 rounded bg-gray-100 px-2 py-1 text-sm">
+                                        <Cpu className="size-4" />{memoryVal != null ? `${memoryVal} MB` : '—'}
+                                    </span>
+                                </div>
+                            </div>
                             <pre className="whitespace-pre-wrap max-h-96 overflow-auto text-sm">{solution}</pre>
                             <div className="mt-4 text-right">
                                 <button
