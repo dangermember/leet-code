@@ -4,4 +4,6 @@ export type problem = {
     title: string;
     description: string;
     solution: string;
+    runtime?: number; // milliseconds
+    memory?: number; // megabytes
 }
