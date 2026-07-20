@@ -14,11 +14,13 @@ return new class extends Migration
         //
         Schema::create("problems", function (Blueprint $table) {
             $table->bigIncrements("id");
-            $table->unsignedBigInteger("number");
+            $table->integer("number");
             $table->string("url");
             $table->string("title");
             $table->string("description");
             $table->string("solution");
+            $table->integer("runtime");
+            $table->integer("memory");
             $table->timestamps();
         });
     }
