@@ -12,8 +12,7 @@ class ProblemsSeeder1260 extends Seeder
      */
     public function run(): void
     {
-        Problem::truncate();
-        Problem::create([
+        $problem = Problem::create([
             "number" => 1260,
             "url" => "https://leetcode.com/problems/shift-2d-grid/description/",
             "title" => "Shift 2D Grid",
@@ -51,5 +50,16 @@ EOD,
             "runtime" => "3",
             "memory" => "20.7",
         ]);
+        $topicNames = [
+            "Mid Level",
+            "Array",
+            "Martrix",
+            "Simulation"
+        ];
+        foreach ($topicNames as $topicName) {
+            $problem->topics()->firstOrCreate([
+                "name" => $topicName,
+            ]);
+        }
     }
 }
