@@ -5,7 +5,6 @@ import AchievementCards from '@/components/AchievementCards';
 import DifficultyChart from '@/components/DifficultyChart';
 import TopicChart from '@/components/TopicChart';
 import SolutionModal from '@/components/SolutionModal';
-import Footer from '@/components/Footer';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { problem } from '@/types/problem';
 import { ChartSegment } from '@/types/ChartSegment';
@@ -68,7 +67,6 @@ export default function Welcome() {
 
                     </div>
                 </div>
-                <Footer />
 
                 <SolutionModal
                     open={open}

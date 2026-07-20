@@ -2,7 +2,6 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import ProblemCard from '@/components/ProblemCard';
 import SolutionModal from '@/components/SolutionModal';
-import Footer from '@/components/Footer';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { problem } from '@/types/problem';
 
@@ -58,7 +57,6 @@ export default function Problems() {
                         </nav>
                     </div>
                 </div>
-                <Footer />
 
                 <SolutionModal
                     open={open}
