@@ -9,10 +9,12 @@ import SolutionModal from '@/components/SolutionModal';
 import Footer from '@/components/Footer';
 import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { problem } from '@/types/problem';
+import { ChartSegment } from '@/types/ChartSegment';
 
 export default function Welcome() {
     const { props } = usePage();
     const problems = props.problems as PaginatedResponse<problem>;
+    const difficulty = props.difficulty as ChartSegment[];
     const [open, setOpen] = useState(false);
     const [solution, setSolution] = useState('');
     const [runtimeVal, setRuntimeVal] = useState<number | null>(null);
@@ -44,6 +46,10 @@ export default function Welcome() {
             <div className="min-h-screen bg-slate-950 text-white">
                 <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
                     <Hero totalSolved={totalSolved} avgRuntime={avgRuntime} avgMemory={avgMemory} />
+                    <div className="my-10 grid gap-6 lg:grid-cols-2">
+                        <DifficultyChart segments={difficulty} />
+                        <TopicChart />
+                    </div>
 
                     <div className="my-10">
                         <div className="my-6">
@@ -55,21 +61,17 @@ export default function Welcome() {
                                     </div>
                                     <p className="text-sm text-slate-500">My latest submissions and performance metrics.</p>
                                 </div>
+                                <aside className="my-6">
+                                    <ProblemFilters totalSolved={totalSolved} />
+                                </aside>
                                 <AchievementCards problems={problems?.data ?? []} onShowSolution={showSolution} />
                             </section>
 
                         </div>
 
-                        <div className="grid gap-6 lg:grid-cols-2">
-                            <DifficultyChart />
-                            <TopicChart />
-                        </div>
-                        <aside className="my-6">
-                            <ProblemFilters totalSolved={totalSolved} />
-                            <Footer />
-                        </aside>
                     </div>
                 </div>
+                <Footer />
 
                 <SolutionModal
                     open={open}
