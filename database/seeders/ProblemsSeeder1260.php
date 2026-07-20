@@ -17,6 +17,7 @@ class ProblemsSeeder1260 extends Seeder
             "number" => 1260,
             "url" => "https://leetcode.com/problems/shift-2d-grid/description/",
             "title" => "Shift 2D Grid",
+            "difficulty" => "Easy",
             "description" => <<<'EOD'
 Given a 2D grid of size m x n and an integer k. You need to shift the grid k times.
 
