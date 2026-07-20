@@ -12,9 +12,9 @@ import type { BreadcrumbItem as BreadcrumbItemType } from '@/types';
 
 export function Breadcrumbs({
     breadcrumbs,
-}: {
+}: Readonly<{
     breadcrumbs: BreadcrumbItemType[];
-}) {
+}>) {
     return (
         <>
             {breadcrumbs.length > 0 && (
@@ -24,7 +24,7 @@ export function Breadcrumbs({
                             const isLast = index === breadcrumbs.length - 1;
 
                             return (
-                                <Fragment key={index}>
+                                <Fragment key={"crum" + index}>
                                     <BreadcrumbItem>
                                         {isLast ? (
                                             <BreadcrumbPage>
