@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { Link } from '@inertiajs/react';
 import { Menu, X } from 'lucide-react';
 
 import AppLogoIcon from '@/components/app-logo-icon';
 import Footer from '@/components/Footer';
 import { home, problems } from '@/routes';
+import { NavLink } from '@/components/nav-link';
 
 const menuLinks = [
     { label: 'Home', href: home() },
     { label: 'Problems', href: problems() },
+    { label: 'Portfolio', href: "https://mohamedeid.net", external: true },
+    { label: 'Github', href: "https://github.com/dangermember", external: true },
 ];
 
 export default function GuestLayout({
@@ -21,7 +23,7 @@ export default function GuestLayout({
             <header className="border-b border-white/10 bg-slate-950/95 backdrop-blur-xl">
                 <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between">
-                        <Link
+                        <NavLink
                             href={home()}
                             className="flex items-center gap-3 text-white"
                         >
@@ -29,18 +31,19 @@ export default function GuestLayout({
                             <span className="text-lg font-semibold">
                                 LeetCode Tracker
                             </span>
-                        </Link>
+                        </NavLink>
 
                         {/* Desktop navigation */}
                         <nav className="hidden items-center gap-6 text-sm font-medium text-slate-300 md:flex">
                             {menuLinks.map((link, index) => (
-                                <Link
+                                <NavLink
                                     key={"nav" + index}
                                     href={link.href}
+                                    external={link.external}
                                     className="transition hover:text-white"
                                 >
                                     {link.label}
-                                </Link>
+                                </NavLink>
                             ))}
                         </nav>
 
@@ -63,14 +66,15 @@ export default function GuestLayout({
                     {open && (
                         <nav className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4 md:hidden">
                             {menuLinks.map((link, index) => (
-                                <Link
+                                <NavLink
                                     key={"nav" + index}
                                     href={link.href}
+                                    external={link.external}
                                     className="rounded-md px-3 py-2 transition hover:bg-white/10"
                                     onClick={() => setOpen(false)}
                                 >
                                     {link.label}
-                                </Link>
+                                </NavLink>
                             ))}
                         </nav>
                     )}
