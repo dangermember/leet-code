@@ -4,10 +4,10 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 export default function AlertError({
     errors,
     title,
-}: {
+}: Readonly<{
     errors: string[];
     title?: string;
-}) {
+}>) {
     return (
         <Alert variant="destructive">
             <AlertCircleIcon />
@@ -15,7 +15,7 @@ export default function AlertError({
             <AlertDescription>
                 <ul className="list-inside list-disc text-sm">
                     {Array.from(new Set(errors)).map((error, index) => (
-                        <li key={index}>{error}</li>
+                        <li key={"error" + index}>{error}</li>
                     ))}
                 </ul>
             </AlertDescription>
