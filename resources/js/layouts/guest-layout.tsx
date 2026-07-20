@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useState } from 'react';
 
 import AppLogoIcon from '@/components/app-logo-icon';
 import Footer from '@/components/Footer';
-import { home, problems } from '@/routes';
 import { NavLink } from '@/components/nav-link';
+import { home, problems } from '@/routes';
 
 const menuLinks = [
     { label: 'Home', href: home() },

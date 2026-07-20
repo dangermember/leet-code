@@ -1,5 +1,5 @@
 import { Clock, Cpu } from 'lucide-react';
-import { problem } from '@/types/problem';
+import type { problem } from '@/types/problem';
 
 interface ProblemCardProps {
     problem: problem;

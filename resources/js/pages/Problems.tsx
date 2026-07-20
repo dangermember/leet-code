@@ -2,8 +2,8 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import ProblemCard from '@/components/ProblemCard';
 import SolutionModal from '@/components/SolutionModal';
-import { PaginatedResponse } from '@/types/PaginatedResponse';
-import { problem } from '@/types/problem';
+import type { PaginatedResponse } from '@/types/PaginatedResponse';
+import type { problem } from '@/types/problem';
 
 export default function Problems() {
     const { props } = usePage();

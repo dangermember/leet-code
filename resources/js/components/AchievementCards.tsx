@@ -1,5 +1,5 @@
 import ProblemCard from '@/components/ProblemCard';
-import { problem } from '@/types/problem';
+import type { problem } from '@/types/problem';
 
 interface AchievementCardsProps {
     problems: problem[];

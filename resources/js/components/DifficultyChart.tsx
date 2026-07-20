@@ -1,4 +1,4 @@
-import { ChartSegment } from "@/types/ChartSegment";
+import type { ChartSegment } from "@/types/ChartSegment";
 
 interface DifficultyChartProps {
     segments?: ChartSegment[];

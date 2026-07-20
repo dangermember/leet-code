@@ -1,13 +1,13 @@
 import { Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-import Hero from '@/components/Hero';
 import AchievementCards from '@/components/AchievementCards';
 import DifficultyChart from '@/components/DifficultyChart';
-import TopicChart from '@/components/TopicChart';
+import Hero from '@/components/Hero';
 import SolutionModal from '@/components/SolutionModal';
-import { PaginatedResponse } from '@/types/PaginatedResponse';
-import { problem } from '@/types/problem';
-import { ChartSegment } from '@/types/ChartSegment';
+import TopicChart from '@/components/TopicChart';
+import type { ChartSegment } from '@/types/ChartSegment';
+import type { PaginatedResponse } from '@/types/PaginatedResponse';
+import type { problem } from '@/types/problem';
 
 export default function Welcome() {
     const { props } = usePage();
