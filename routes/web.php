@@ -7,7 +7,7 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     $problems = (new ProblemsController())->index();
-    return Inertia::render('welcome', [
+    return Inertia::render('Welcome', [
         'problems' => $problems,
     ]);
 })->name('home');

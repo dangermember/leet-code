@@ -45,8 +45,8 @@ export default function Welcome() {
                 <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
                     <Hero totalSolved={totalSolved} avgRuntime={avgRuntime} avgMemory={avgMemory} />
 
-                    <div className="mt-10 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
-                        <div className="space-y-6">
+                    <div className="my-10">
+                        <div className="my-6">
                             <section className="rounded-3xl border border-white/10 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/20">
                                 <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                     <div>
@@ -58,13 +58,13 @@ export default function Welcome() {
                                 <AchievementCards problems={problems?.data ?? []} onShowSolution={showSolution} />
                             </section>
 
-                            <div className="grid gap-6 lg:grid-cols-2">
-                                <DifficultyChart />
-                                <TopicChart />
-                            </div>
                         </div>
 
-                        <aside className="space-y-6">
+                        <div className="grid gap-6 lg:grid-cols-2">
+                            <DifficultyChart />
+                            <TopicChart />
+                        </div>
+                        <aside className="my-6">
                             <ProblemFilters totalSolved={totalSolved} />
                             <Footer />
                         </aside>
