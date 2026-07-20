@@ -2,6 +2,7 @@ import { PaginatedResponse } from '@/types/PaginatedResponse';
 import { problem } from '@/types/problem';
 import { Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { Clock, Cpu } from 'lucide-react';
 
 export default function Welcome() {
     const { props } = usePage();
@@ -31,8 +32,12 @@ export default function Welcome() {
                                         </div>
                                         <div className="flex gap-2">
                                             <div className="flex items-center gap-2">
-                                                <span className="rounded bg-gray-100 px-2 py-1 text-sm">{p.runtime != null ? `${p.runtime} ms` : '—'}</span>
-                                                <span className="rounded bg-gray-100 px-2 py-1 text-sm">{p.memory != null ? `${p.memory} MB` : '—'}</span>
+                                                <span title={p.runtime != null ? `Runtime: ${p.runtime} ms` : 'Runtime unknown'} className="flex items-center gap-1 rounded bg-gray-100 px-2 py-1 text-sm">
+                                                    <Clock className="size-4" />{p.runtime != null ? `${p.runtime} ms` : '—'}
+                                                </span>
+                                                <span title={p.memory != null ? `Memory: ${p.memory} MB` : 'Memory unknown'} className="flex items-center gap-1 rounded bg-gray-100 px-2 py-1 text-sm">
+                                                    <Cpu className="size-4" />{p.memory != null ? `${p.memory} MB` : '—'}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
