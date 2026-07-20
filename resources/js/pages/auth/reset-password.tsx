@@ -13,7 +13,11 @@ type Props = {
     passwordRules: string;
 };
 
-export default function ResetPassword({ token, email, passwordRules }: Readonly<Props>) {
+export default function ResetPassword({
+    token,
+    email,
+    passwordRules,
+}: Readonly<Props>) {
     return (
         <>
             <Head title="Reset password" />

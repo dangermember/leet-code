@@ -23,7 +23,12 @@ export default function Welcome() {
     const [memoryVal, setMemoryVal] = useState<number | null>(null);
     const [activeTitle, setActiveTitle] = useState('');
 
-    function showSolution(text: string, title: string, runtime?: number | null, memory?: number | null) {
+    function showSolution(
+        text: string,
+        title: string,
+        runtime?: number | null,
+        memory?: number | null,
+    ) {
         setSolution(text);
         setActiveTitle(title);
         setRuntimeVal(runtime ?? null);
@@ -36,7 +41,11 @@ export default function Welcome() {
             <Head title="LeetCode Achievements" />
             <div className="min-h-screen bg-slate-950 text-white">
                 <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-                    <Hero totalSolved={totalSolved} avgRuntime={avgRuntime} avgMemory={avgMemory} />
+                    <Hero
+                        totalSolved={totalSolved}
+                        avgRuntime={avgRuntime}
+                        avgMemory={avgMemory}
+                    />
                     <div className="my-10 grid gap-6 lg:grid-cols-2">
                         <DifficultyChart segments={difficulty} />
                         <TopicChart segments={topics} />
@@ -47,16 +56,24 @@ export default function Welcome() {
                             <section className="rounded-3xl border border-white/10 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/20">
                                 <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                     <div>
-                                        <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Solved problems</p>
-                                        <h2 className="mt-2 text-3xl font-semibold text-white">Recent highlights</h2>
+                                        <p className="text-sm tracking-[0.18em] text-slate-400 uppercase">
+                                            Solved problems
+                                        </p>
+                                        <h2 className="mt-2 text-3xl font-semibold text-white">
+                                            Recent highlights
+                                        </h2>
                                     </div>
-                                    <p className="text-sm text-slate-500">My latest submissions and performance metrics.</p>
+                                    <p className="text-sm text-slate-500">
+                                        My latest submissions and performance
+                                        metrics.
+                                    </p>
                                 </div>
-                                <AchievementCards problems={problems?.data ?? []} onShowSolution={showSolution} />
+                                <AchievementCards
+                                    problems={problems?.data ?? []}
+                                    onShowSolution={showSolution}
+                                />
                             </section>
-
                         </div>
-
                     </div>
                 </div>
 

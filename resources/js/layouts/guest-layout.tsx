@@ -9,8 +9,12 @@ import { home, problems } from '@/routes';
 const menuLinks = [
     { label: 'Home', href: home() },
     { label: 'Problems', href: problems() },
-    { label: 'Portfolio', href: "https://mohamedeid.net", external: true },
-    { label: 'Github', href: "https://github.com/dangermember", external: true },
+    { label: 'Portfolio', href: 'https://mohamedeid.net', external: true },
+    {
+        label: 'Github',
+        href: 'https://github.com/dangermember',
+        external: true,
+    },
 ];
 
 export default function GuestLayout({
@@ -37,7 +41,7 @@ export default function GuestLayout({
                         <nav className="hidden items-center gap-6 text-sm font-medium text-slate-300 md:flex">
                             {menuLinks.map((link, index) => (
                                 <NavLink
-                                    key={"nav" + index}
+                                    key={'nav' + index}
                                     href={link.href}
                                     external={link.external}
                                     className="transition hover:text-white"
@@ -67,7 +71,7 @@ export default function GuestLayout({
                         <nav className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4 md:hidden">
                             {menuLinks.map((link, index) => (
                                 <NavLink
-                                    key={"nav" + index}
+                                    key={'nav' + index}
                                     href={link.href}
                                     external={link.external}
                                     className="rounded-md px-3 py-2 transition hover:bg-white/10"

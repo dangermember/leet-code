@@ -7,4 +7,4 @@ export type problem = {
     solution: string;
     runtime?: number; // milliseconds
     memory?: number; // megabytes
-}
+};

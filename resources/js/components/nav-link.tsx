@@ -14,15 +14,25 @@ export function NavLink({
     children,
     external,
     className,
-    onClick
+    onClick,
 }: Readonly<MenuLink>) {
     if (external) {
         return (
-            <a onClick={() => onClick?.()} className={className} href={String(href)} target="_blank" rel="noopener noreferrer">
+            <a
+                onClick={() => onClick?.()}
+                className={className}
+                href={String(href)}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
                 {children}
             </a>
         );
     }
 
-    return <Link onClick={() => onClick?.()} className={className} href={href}>{children}</Link>;
+    return (
+        <Link onClick={() => onClick?.()} className={className} href={href}>
+            {children}
+        </Link>
+    );
 }

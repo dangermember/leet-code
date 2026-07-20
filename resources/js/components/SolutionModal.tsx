@@ -9,7 +9,14 @@ interface SolutionModalProps {
     onClose: () => void;
 }
 
-export default function SolutionModal({ open, title, solution, runtime, memory, onClose }: SolutionModalProps) {
+export default function SolutionModal({
+    open,
+    title,
+    solution,
+    runtime,
+    memory,
+    onClose,
+}: SolutionModalProps) {
     if (!open) {
         return null;
     }
@@ -19,21 +26,41 @@ export default function SolutionModal({ open, title, solution, runtime, memory, 
             <div className="w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950 p-6 shadow-2xl shadow-slate-950/40">
                 <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Solution details</p>
-                        <h2 className="mt-2 text-2xl font-semibold text-white">{title || 'Solution'}</h2>
+                        <p className="text-sm tracking-[0.18em] text-slate-400 uppercase">
+                            Solution details
+                        </p>
+                        <h2 className="mt-2 text-2xl font-semibold text-white">
+                            {title || 'Solution'}
+                        </h2>
                     </div>
                     <div className="flex flex-wrap gap-3 text-sm text-slate-300">
-                        <span title={runtime != null ? `Runtime: ${runtime} ms` : 'Runtime unknown'} className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-2">
+                        <span
+                            title={
+                                runtime != null
+                                    ? `Runtime: ${runtime} ms`
+                                    : 'Runtime unknown'
+                            }
+                            className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-2"
+                        >
                             <Clock className="size-4" />
                             {runtime != null ? `${runtime} ms` : '—'}
                         </span>
-                        <span title={memory != null ? `Memory: ${memory} MB` : 'Memory unknown'} className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-2">
+                        <span
+                            title={
+                                memory != null
+                                    ? `Memory: ${memory} MB`
+                                    : 'Memory unknown'
+                            }
+                            className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-2"
+                        >
                             <Cpu className="size-4" />
                             {memory != null ? `${memory} MB` : '—'}
                         </span>
                     </div>
                 </div>
-                <pre className="max-h-[60vh] overflow-auto rounded-3xl bg-slate-900/80 p-5 text-sm leading-6 text-slate-100">{solution}</pre>
+                <pre className="max-h-[60vh] overflow-auto rounded-3xl bg-slate-900/80 p-5 text-sm leading-6 text-slate-100">
+                    {solution}
+                </pre>
                 <div className="mt-6 text-right">
                     <button
                         onClick={onClose}

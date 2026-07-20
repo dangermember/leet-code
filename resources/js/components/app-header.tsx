@@ -148,7 +148,7 @@ export function AppHeader({ breadcrumbs = [] }: Readonly<Props>) {
                             <NavigationMenuList className="flex h-full items-stretch space-x-2">
                                 {mainNavItems.map((item, index) => (
                                     <NavigationMenuItem
-                                        key={"nav" + index}
+                                        key={'nav' + index}
                                         className="relative flex h-full items-center"
                                     >
                                         <Link
