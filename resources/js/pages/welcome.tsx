@@ -29,7 +29,14 @@ export default function Welcome() {
                                             <div className="text-sm text-muted-foreground">#{p.number}</div>
                                             <div className="text-lg font-medium">{p.title}</div>
                                         </div>
+                                        <div className="flex gap-2">
+                                            <div className="flex items-center gap-2">
+                                                <span className="rounded bg-gray-100 px-2 py-1 text-sm">{p.runtime != null ? `${p.runtime} ms` : '—'}</span>
+                                                <span className="rounded bg-gray-100 px-2 py-1 text-sm">{p.memory != null ? `${p.memory} MB` : '—'}</span>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <pre className="w-90 mb-2 text-sm text-gray-600 dark:text-gray-300 overflow-auto">{p.description}</pre>
                                     <div className="flex gap-2">
                                         <button
                                             type="button"
