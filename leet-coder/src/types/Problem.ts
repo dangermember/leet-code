@@ -8,8 +8,8 @@ export interface Problem {
     title: string;
     description: string;
     solution: string;
-    runtime: string | null;
-    memory: string | null;
+    runtime: number | null;
+    memory: number | null;
     difficulty: Difficulty;
     created_at: string;
     updated_at: string;
