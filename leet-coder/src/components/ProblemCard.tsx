@@ -3,17 +3,10 @@ import { Clock, Cpu } from 'lucide-react';
 
 interface ProblemCardProps {
     problem: Problem;
-    onShowSolution: (
-        solution: string,
-        title: string,
-        runtime?: number | null,
-        memory?: number | null,
-    ) => void;
 }
 
 export default function ProblemCard({
-    problem,
-    onShowSolution,
+    problem
 }: Readonly<ProblemCardProps>) {
     return (
         <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/20 transition hover:-translate-y-1 hover:border-sky-500/30 hover:bg-slate-900">
@@ -47,14 +40,6 @@ export default function ProblemCard({
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <button
                     type="button"
-                    onClick={() =>
-                        onShowSolution(
-                            problem.solution,
-                            problem.title,
-                            problem.runtime,
-                            problem.memory,
-                        )
-                    }
                     className="inline-flex w-full items-center justify-center rounded-3xl bg-sky-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-400 sm:w-auto"
                 >
                     Show solution
