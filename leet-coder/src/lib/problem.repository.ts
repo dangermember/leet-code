@@ -1,12 +1,15 @@
-import { db } from "./database";
+import { db } from "@/lib/database";
 import type { Problem } from "@/types/Problem";
 import type { Topic } from "@/types/Topic";
+import type { Difficulty } from "@/types/Difficulty";
 
-const getProblemStmt = db.prepare(`
-SELECT *
-FROM problems
-WHERE id = ?
-`);
+interface GetProblemsOptions {
+    page?: number;
+    perPage?: number;
+    difficulty?: Difficulty;
+    topic?: string;
+    search?: string;
+}
 
 const getTopicsStmt = db.prepare(`
 SELECT t.*
@@ -18,52 +21,81 @@ ORDER BY t.name
 `);
 
 export class ProblemRepository {
-    static find(id: number): Problem | null {
-        const problem = getProblemStmt.get(id) as Problem | undefined;
+    static paginate({
+        page = 1,
+        perPage = 20,
+        difficulty,
+        topic,
+        search,
+    }: GetProblemsOptions = {}) {
+        perPage = Math.min(Math.max(perPage, 1), 100);
 
-        if (!problem) {
-            return null;
+        const offset = (page - 1) * perPage;
+
+        const where: string[] = [];
+        const params: unknown[] = [];
+
+        if (difficulty) {
+            where.push("p.difficulty = ?");
+            params.push(difficulty);
         }
 
-        problem.topics = getTopicsStmt.all(id) as Topic[];
+        if (search) {
+            where.push("p.title LIKE ?");
+            params.push(`%${search}%`);
+        }
 
-        return problem;
-    }
+        if (topic) {
+            where.push(`
+                EXISTS (
+                    SELECT 1
+                    FROM problem_topic pt
+                    JOIN topics t
+                        ON t.id = pt.topic_id
+                    WHERE pt.problem_id = p.id
+                      AND t.name = ?
+                )
+            `);
 
-    static all(): Problem[] {
+            params.push(topic);
+        }
+
+        const whereClause =
+            where.length > 0
+                ? `WHERE ${where.join(" AND ")}`
+                : "";
+
+        const total = db
+            .prepare(`
+                SELECT COUNT(*) as total
+                FROM problems p
+                ${whereClause}
+            `)
+            .get(...params) as { total: number };
+
         const problems = db
-            .prepare("SELECT * FROM problems ORDER BY number")
-            .all() as Problem[];
+            .prepare(`
+                SELECT *
+                FROM problems p
+                ${whereClause}
+                ORDER BY p.number
+                LIMIT ?
+                OFFSET ?
+            `)
+            .all(...params, perPage, offset) as Problem[];
 
         for (const problem of problems) {
             problem.topics = getTopicsStmt.all(problem.id) as Topic[];
         }
 
-        return problems;
-    }
-
-    static create(problem: Omit<Problem, "id" | "created_at" | "updated_at" | "topics">) {
-        return db.prepare(`
-            INSERT INTO problems (
-                number,
-                url,
-                title,
-                description,
-                solution,
-                runtime,
-                memory,
-                difficulty
-            )
-            VALUES (
-                @number,
-                @url,
-                @title,
-                @description,
-                @solution,
-                @runtime,
-                @memory,
-                @difficulty
-            )
-        `).run(problem);
+        return {
+            data: problems,
+            meta: {
+                page,
+                perPage,
+                total: total.total,
+                totalPages: Math.ceil(total.total / perPage),
+            },
+        };
     }
 }
