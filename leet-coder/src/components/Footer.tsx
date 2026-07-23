@@ -6,7 +6,6 @@ export default function Footer() {
                     Built to showcase LeetCode progress with performance metrics
                     and problem highlights.
                 </p>
-                <p>Powered by React, Inertia, and Tailwind CSS.</p>
             </div>
         </footer>
     );
