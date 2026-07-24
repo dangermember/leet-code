@@ -12,7 +12,7 @@ export function migrate() {
 
         CREATE TABLE problems (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            number INTEGER NOT NULL,
+            number INTEGER NOT NULL UNIQUE,
             url TEXT NOT NULL,
             title TEXT NOT NULL,
             description TEXT NOT NULL,
