@@ -1,17 +1,14 @@
-import { db } from "@/lib/db";
+import { connection } from "@/lib/db";
 
 export function migrate() {
-    db.exec(`
+    connection.exec(`
         DROP TABLE IF EXISTS problem_topic;
         DROP TABLE IF EXISTS solutions;
         DROP TABLE IF EXISTS topics;
         DROP TABLE IF EXISTS problems;
         DROP TABLE IF EXISTS users;
 
-        DELETE FROM sqlite_sequence
-        WHERE name IN ('problems', 'topics', 'solutions', 'users');
-
-        CREATE TABLE users (
+        CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
             password TEXT NOT NULL,
@@ -20,7 +17,7 @@ export function migrate() {
             updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         );
 
-        CREATE TABLE problems (
+        CREATE TABLE IF NOT EXISTS problems (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             number INTEGER NOT NULL UNIQUE,
             url TEXT NOT NULL,
@@ -31,7 +28,7 @@ export function migrate() {
             updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             );
             
-            CREATE TABLE solutions (
+            CREATE TABLE IF NOT EXISTS solutions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 problem_id INTEGER NOT NULL,
                 language TEXT NOT NULL CHECK(language IN ('C++','Java','Python3','Python','JavaScript','TypeScript','C#','C','Go','Kotlin','Swift','Rust','Ruby','PHP','Dart','Scala','Elixir','Erlang','Racket')),
@@ -49,14 +46,14 @@ export function migrate() {
                     ON DELETE CASCADE
         );
 
-        CREATE TABLE topics (
+        CREATE TABLE IF NOT EXISTS topics (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL UNIQUE,
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         );
 
-        CREATE TABLE problem_topic (
+        CREATE TABLE IF NOT EXISTS problem_topic (
             problem_id INTEGER NOT NULL,
             topic_id INTEGER NOT NULL,
 
@@ -71,20 +68,22 @@ export function migrate() {
                 ON DELETE CASCADE
         );
 
-        CREATE INDEX idx_problem_number
+        CREATE INDEX IF NOT EXISTS idx_problem_number
             ON problems(number);
 
-        CREATE INDEX idx_problem_difficulty
+        CREATE INDEX IF NOT EXISTS idx_problem_difficulty
             ON problems(difficulty);
 
-        CREATE INDEX idx_problem_topic_problem
+        CREATE INDEX IF NOT EXISTS idx_problem_topic_problem
             ON problem_topic(problem_id);
 
-        CREATE INDEX idx_problem_topic_topic
+        CREATE INDEX IF NOT EXISTS idx_problem_topic_topic
             ON problem_topic(topic_id);
 
-        CREATE INDEX idx_solutions_problem_id
+        CREATE INDEX IF NOT EXISTS idx_solutions_problem_id
             ON solutions(problem_id);
     `);
+
+    console.log("Migration completed successfully.");
 }
 migrate();
