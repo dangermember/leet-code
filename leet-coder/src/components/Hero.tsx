@@ -45,18 +45,18 @@ export default function Hero({
                         </div>
                         <div className="rounded-3xl bg-white/5 p-5 ring-1 ring-white/10">
                             <p className="text-sm tracking-[0.18em] text-slate-400 uppercase">
-                                Average runtime
+                                Average runtime score
                             </p>
                             <p className="mt-2 text-3xl font-semibold text-white">
-                                {avgRuntime}
+                                {avgRuntime} %
                             </p>
                         </div>
                         <div className="rounded-3xl bg-slate-900/80 p-4 ring-1 ring-white/10">
                             <p className="text-xs tracking-[0.18em] text-slate-400 uppercase">
-                                Average memory
+                                Average memory score
                             </p>
                             <p className="mt-2 text-2xl font-semibold text-white">
-                                {avgMemory}
+                                {avgMemory} %
                             </p>
                         </div>
                     </div>
