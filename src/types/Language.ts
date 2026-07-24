@@ -1,0 +1,1 @@
+export type Language = "C++" | "Java" | "Python3" | "Python" | "JavaScript" | "TypeScript" | "C#" | "C" | "Go" | "Kotlin" | "Swift" | "Rust" | "Ruby" | "PHP" | "Dart" | "Scala" | "Elixir" | "Erlang" | "Racket";
