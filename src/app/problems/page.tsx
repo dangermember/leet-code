@@ -3,6 +3,12 @@ import MiniHero from "@/components/MiniHero";
 import { PaginatedResult } from "@/types/PaginatedResult";
 import { Problem } from "@/types/Problem";
 import { Statistics } from "@/types/Statistics";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Leet Coder - Problems",
+  description: "Showcasing my latest LeetCode achievements",
+};
 
 export default async function Problems() {
   const problemsResponse = await fetch(`${process.env.APP_URL}/api/problems`);
