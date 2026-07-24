@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { getCookieValue, verifySessionCookie } from "@/lib/admin-auth";
 import { ProblemRepository } from "@/lib/problem.repository";
+import { ProblemAdminRepository } from "@/lib/problem-admin.repository";
 
 function requireAuth(request: NextRequest) {
     const cookieHeader = request.headers.get("cookie");
@@ -30,37 +30,8 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const insertProblem = db.prepare(`
-        INSERT INTO problems (number, url, title, description, difficulty)
-        VALUES (@number, @url, @title, @description, @difficulty)
-    `);
 
-    const insertSolution = db.prepare(`
-        INSERT INTO solutions (
-            problem_id,
-            language,
-            solution,
-            runtime,
-            memory,
-            major_version,
-            minor_version,
-            patch_version,
-            submitted
-        )
-        VALUES (
-            @problem_id,
-            @language,
-            @solution,
-            @runtime,
-            @memory,
-            @major_version,
-            @minor_version,
-            @patch_version,
-            @submitted
-        )
-    `);
-
-    const result = insertProblem.run({
+    const result = ProblemAdminRepository.createProblem({
         number: Number(body.number),
         url: body.url,
         title: body.title,
@@ -70,15 +41,15 @@ export async function POST(request: NextRequest) {
 
     const problemId = Number(result.lastInsertRowid);
 
-    insertSolution.run({
-        problem_id: problemId,
+    ProblemAdminRepository.createSolution({
+        problemId,
         language: body.language ?? "Python3",
         solution: body.solution ?? "",
         runtime: body.runtime ?? null,
         memory: body.memory ?? null,
-        major_version: body.major_version ?? null,
-        minor_version: body.minor_version ?? null,
-        patch_version: body.patch_version ?? null,
+        majorVersion: body.major_version ?? null,
+        minorVersion: body.minor_version ?? null,
+        patchVersion: body.patch_version ?? null,
         submitted: body.submitted ?? true,
     });
 

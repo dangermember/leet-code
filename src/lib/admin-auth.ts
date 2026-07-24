@@ -2,22 +2,13 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
+import { UserRepository } from "@/lib/user.repository";
 
 const COOKIE_NAME = "leet-dashboard-session";
 const SECRET = process.env.DASHBOARD_SESSION_SECRET ?? "leet-dashboard-secret";
 
-const getUserStmt = db.prepare(`
-    SELECT id, username, password, role
-    FROM users
-    WHERE username = ?
-    LIMIT 1
-`);
-
 export function verifyCredentials(username: string, password: string) {
-    const user = getUserStmt.get(username) as
-        | { id: number; username: string; password: string; role: string }
-        | undefined;
+    const user = UserRepository.getByUsername(username);
 
     if (!user) {
         return false;
