@@ -57,7 +57,7 @@ VALUES (?, ?)
 `);
 
 const seed = db.transaction(() => {
-    const file = path.join(process.cwd(), "src", "data", "problems.json");
+    const file = path.join(process.cwd(), "data", "problems.json");
 
     if (!fs.existsSync(file)) {
         throw new Error(`Missing ${file}`);
