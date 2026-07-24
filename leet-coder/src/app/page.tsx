@@ -7,9 +7,7 @@ import { Problem } from "@/types/Problem";
 import { Statistics } from "@/types/Statistics";
 
 export default async function Home() {
-  const problemsResponse = await fetch(`${process.env.APP_URL}/api/problems`, {
-
-  });
+  const problemsResponse = await fetch(`${process.env.APP_URL}/api/problems?perPage=6`);
   const problems: PaginatedResult<Problem> = await problemsResponse.json();
   const totalSolved = problems?.meta?.total ?? 0;
 
