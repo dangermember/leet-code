@@ -53,5 +53,12 @@ export async function POST(request: NextRequest) {
         submitted: body.submitted ?? true,
     });
 
+    if (body.topics) {
+        const topicList = Array.isArray(body.topics)
+            ? body.topics
+            : String(body.topics).split(",").map(t => t.trim()).filter(Boolean);
+        ProblemAdminRepository.syncTopics(problemId, topicList);
+    }
+
     return NextResponse.json({ success: true, id: problemId });
 }

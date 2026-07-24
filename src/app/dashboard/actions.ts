@@ -60,18 +60,23 @@ export async function logoutAction() {
 }
 
 export async function createProblemAction(formData: FormData) {
+    const topicsRaw = formData.get("topics")?.toString() ?? "";
+    const topics = topicsRaw.split(",").map((t) => t.trim()).filter(Boolean);
+
     const payload = {
         number: Number(formData.get("number") ?? 0),
         url: formData.get("url")?.toString() ?? "",
         title: formData.get("title")?.toString() ?? "",
         description: formData.get("description")?.toString() ?? "",
         difficulty: formData.get("difficulty")?.toString() ?? "Easy",
+        language: formData.get("language")?.toString() ?? "Python3",
         solution: formData.get("solution")?.toString() ?? "",
         runtime: formData.get("runtime") ? Number(formData.get("runtime")) : null,
         memory: formData.get("memory") ? Number(formData.get("memory")) : null,
         major_version: formData.get("major_version") ? Number(formData.get("major_version")) : null,
         minor_version: formData.get("minor_version") ? Number(formData.get("minor_version")) : null,
-        path_version: formData.get("path_version") ? Number(formData.get("path_version")) : null,
+        patch_version: formData.get("patch_version") ? Number(formData.get("patch_version")) : null,
+        topics,
     };
 
     await callAdminApi("/api/admin/problems", { method: "POST" }, payload);
@@ -81,18 +86,23 @@ export async function createProblemAction(formData: FormData) {
 
 export async function updateProblemAction(formData: FormData) {
     const id = formData.get("id")?.toString();
+    const topicsRaw = formData.get("topics")?.toString() ?? "";
+    const topics = topicsRaw.split(",").map((t) => t.trim()).filter(Boolean);
+
     const payload = {
         number: Number(formData.get("number") ?? 0),
         url: formData.get("url")?.toString() ?? "",
         title: formData.get("title")?.toString() ?? "",
         description: formData.get("description")?.toString() ?? "",
         difficulty: formData.get("difficulty")?.toString() ?? "Easy",
+        language: formData.get("language")?.toString() ?? "Python3",
         solution: formData.get("solution")?.toString() ?? "",
         runtime: formData.get("runtime") ? Number(formData.get("runtime")) : null,
         memory: formData.get("memory") ? Number(formData.get("memory")) : null,
         major_version: formData.get("major_version") ? Number(formData.get("major_version")) : null,
         minor_version: formData.get("minor_version") ? Number(formData.get("minor_version")) : null,
-        path_version: formData.get("path_version") ? Number(formData.get("path_version")) : null,
+        patch_version: formData.get("patch_version") ? Number(formData.get("patch_version")) : null,
+        topics,
     };
 
     if (!id) {

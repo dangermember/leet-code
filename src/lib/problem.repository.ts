@@ -147,6 +147,32 @@ export class ProblemRepository {
         return problems;
     }
 
+    static getById(id: number): Problem | null {
+        const problem = this.db
+            .prepare(`
+                SELECT *
+                FROM problems
+                WHERE id = ?
+            `)
+            .get(id) as Problem | undefined;
+
+        if (!problem) return null;
+
+        this.enrichProblems([problem]);
+
+        return problem;
+    }
+
+    static getAllTopics(): Topic[] {
+        return this.db
+            .prepare(`
+                SELECT *
+                FROM topics
+                ORDER BY name ASC
+            `)
+            .all() as Topic[];
+    }
+
     static groupByDifficulty(): ChartSegment[] {
         const total = Math.max(this.getProblemCount(), 1);
 
