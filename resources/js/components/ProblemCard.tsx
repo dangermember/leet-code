@@ -30,7 +30,7 @@ export default function ProblemCard({
                     <span className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
                         <Clock className="size-4" />
                         {problem.runtime != null
-                            ? `${problem.runtime} ms`
+                            ? `${problem.runtime} %`
                             : 'N/A'}
                     </span>
                     <span className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
