@@ -15,7 +15,7 @@ export default async function Home() {
   const statistics: Statistics = await statisticsResponse.json();
 
   return <div className="min-h-screen bg-slate-950 text-white">
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <Hero
         totalSolved={totalSolved}
         avgRuntime={statistics.runtime}
