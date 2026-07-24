@@ -1,6 +1,6 @@
 'use client'
 import { Problem } from '@/types/Problem';
-import { Cpu, MemoryStick } from 'lucide-react';
+import { ChevronDown, Cpu, MemoryStick } from 'lucide-react';
 import { useState } from 'react';
 
 interface SolutionModalProps {
@@ -50,14 +50,13 @@ export default function SolutionModal({
                         </span>
                     </div>
                 </div>
-                <div className="max-h-[70vh] space-y-6 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
+                <div className="max-h-[70vh] space-y-4 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
                     {problem.solutions.map((solution) => (
-                        <div
+                        <details
                             key={solution.id}
-                            className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950/60 shadow-sm"
+                            className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950/60 group"
                         >
-                            {/* Header */}
-                            <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/60 px-5 py-3">
+                            <summary className="flex cursor-pointer list-none items-center justify-between border-b border-slate-800 bg-slate-900/60 px-5 py-3 hover:bg-slate-900">
                                 <div className="flex items-center gap-3">
                                     <span className="rounded-md bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-400">
                                         {solution.language}
@@ -66,23 +65,30 @@ export default function SolutionModal({
 
                                 <div className="flex items-center gap-4 text-xs text-slate-400">
                                     {solution.runtime !== null && (
-                                        <span className='flex gap-2' title='runtime score'><Cpu className="size-4" /> {solution.runtime} %</span>
+                                        <span className="flex gap-2" title="Runtime score">
+                                            <Cpu className="size-4" />
+                                            {solution.runtime}%
+                                        </span>
                                     )}
 
                                     {solution.memory !== null && (
-                                        <span className='flex gap-2' title='memory score'><MemoryStick className="size-4" /> {solution.memory} %</span>
+                                        <span className="flex gap-2" title="Memory score">
+                                            <MemoryStick className="size-4" />
+                                            {solution.memory}%
+                                        </span>
                                     )}
-                                </div>
-                            </div>
 
-                            {/* Code */}
+                                    <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
+                                </div>
+                            </summary>
+
                             <pre className="max-h-[60vh] overflow-auto bg-slate-950 p-5 text-sm leading-7 text-slate-100 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
                                 <code>
                                     {solution.solution ||
                                         "No solutions available for this problem yet."}
                                 </code>
                             </pre>
-                        </div>
+                        </details>
                     ))}
                 </div>
                 <div className="mt-6 text-right">
