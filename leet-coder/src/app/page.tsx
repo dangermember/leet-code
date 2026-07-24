@@ -2,37 +2,30 @@ import AchievementCards from "@/components/AchievementCards";
 import DifficultyChart from "@/components/DifficultyChart";
 import Hero from "@/components/Hero";
 import TopicChart from "@/components/TopicChart";
-import { ChartSegment } from "@/types/ChartSegment";
 import { PaginatedResult } from "@/types/PaginatedResult";
 import { Problem } from "@/types/Problem";
+import { Statistics } from "@/types/Statistics";
 
 export default async function Home() {
   const problemsResponse = await fetch(`${process.env.APP_URL}/api/problems`, {
 
   });
   const problems: PaginatedResult<Problem> = await problemsResponse.json();
-  const totalSolved = 0;//problems?.meta?.total ?? 0;
-  const difficulty = [{
-    "label": "Easy",
-    "value": 100
-  }] as ChartSegment[];//problems.difficulty as ChartSegment[];
-  const topics = [{
-    "label": "Easy",
-    "value": 100
-  }] as ChartSegment[];//problems.topics as ChartSegment[];
-  const avgRuntime = "0ms";//problems.avgRuntime as string;
-  const avgMemory = "0mb";//problems.avgMemory as string;
+  const totalSolved = problems?.meta?.total ?? 0;
+
+  const statisticsResponse = await fetch(`${process.env.APP_URL}/api/statistics`);
+  const statistics: Statistics = await statisticsResponse.json();
 
   return <div className="min-h-screen bg-slate-950 text-white">
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <Hero
         totalSolved={totalSolved}
-        avgRuntime={avgRuntime}
-        avgMemory={avgMemory}
+        avgRuntime={statistics.runtime}
+        avgMemory={statistics.memory}
       />
       <div className="my-10 grid gap-6 lg:grid-cols-2">
-        <DifficultyChart segments={difficulty} />
-        <TopicChart segments={topics} />
+        <DifficultyChart segments={statistics.difficulty} />
+        <TopicChart segments={statistics.topics} />
       </div>
 
       <div className="my-10">
