@@ -1,6 +1,6 @@
-leet-coder/data/*.db-shm
-leet-coder/data/*.db-wal
-leet-coder/data/*.db
+data/*.db-shm
+data/*.db-wal
+data/*.db
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
