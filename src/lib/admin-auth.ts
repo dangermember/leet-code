@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
@@ -22,7 +23,7 @@ export function verifyCredentials(username: string, password: string) {
         return false;
     }
 
-    return user.password === password;
+    return bcrypt.compareSync(password, user.password);
 }
 
 function createSignedPayload(payload: string) {

@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 
 const insertUser = db.prepare(`
@@ -7,7 +8,7 @@ const insertUser = db.prepare(`
 
 insertUser.run({
     username: "admin",
-    password: "admin123",
+    password: bcrypt.hashSync("admin123", 10),
     role: "admin",
 });
 

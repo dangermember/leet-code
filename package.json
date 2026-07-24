@@ -12,6 +12,7 @@
     "seed:users": "tsx scripts/seed-users.ts"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.1",
     "better-sqlite3": "^13.0.1",
     "lucide-react": "^1.26.0",
     "next": "16.2.11",
