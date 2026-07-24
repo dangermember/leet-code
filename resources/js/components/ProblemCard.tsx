@@ -36,8 +36,8 @@ export default function ProblemCard({
                     <span className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
                         <Cpu className="size-4" />
                         {problem.memory != null
-                            ? `${problem.memory} MB`
-                            : 'N/A'}
+                            ? `${problem.memory}`
+                            : '—'}
                     </span>
                 </div>
             </div>

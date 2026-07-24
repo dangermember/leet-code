@@ -48,13 +48,13 @@ export default function SolutionModal({
                         <span
                             title={
                                 memory != null
-                                    ? `Memory: ${memory} MB`
-                                    : 'Memory unknown'
+                                    ? `Memory: ${memory}`
+                                    : '—'
                             }
                             className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-2"
                         >
                             <Cpu className="size-4" />
-                            {memory != null ? `${memory} MB` : '—'}
+                            {memory != null ? `${memory}` : '—'}
                         </span>
                     </div>
                 </div>
