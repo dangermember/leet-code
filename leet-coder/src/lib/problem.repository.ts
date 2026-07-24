@@ -2,6 +2,7 @@ import { db } from "@/lib/database";
 import type { Problem } from "@/types/Problem";
 import type { Topic } from "@/types/Topic";
 import type { Difficulty } from "@/types/Difficulty";
+import { ChartSegment } from "@/types/ChartSegment";
 
 interface GetProblemsOptions {
     page?: number;
@@ -18,6 +19,45 @@ JOIN problem_topic pt
 ON pt.topic_id = t.id
 WHERE pt.problem_id = ?
 ORDER BY t.name
+`);
+
+const getProblemCountStmt = db.prepare(`
+SELECT COUNT(*) AS total
+FROM problems
+`);
+
+const groupByDifficultyStmt = db.prepare(`
+SELECT
+    difficulty AS label,
+    COUNT(*) * 100.0 / ? AS value
+FROM problems
+GROUP BY difficulty
+ORDER BY value DESC, label
+LIMIT 6
+`);
+
+const groupByTopicStmt = db.prepare(`
+SELECT
+    t.name AS label,
+    COUNT(pt.problem_id) * 100.0 / ? AS value
+FROM topics t
+JOIN problem_topic pt
+    ON pt.topic_id = t.id
+GROUP BY t.name
+ORDER BY value DESC, label
+LIMIT 6
+`);
+
+const averageRuntimeStmt = db.prepare(`
+SELECT AVG(runtime) AS average
+FROM problems
+WHERE runtime > 0
+`);
+
+const averageMemoryStmt = db.prepare(`
+SELECT AVG(memory) AS average
+FROM problems
+WHERE memory > 0
 `);
 
 export class ProblemRepository {
@@ -97,5 +137,55 @@ export class ProblemRepository {
                 totalPages: Math.ceil(total.total / perPage),
             },
         };
+    }
+
+    static getAll(): Problem[] {
+        const problems = db
+            .prepare(`
+                SELECT *
+                FROM problems
+                ORDER BY number
+            `)
+            .all() as Problem[];
+
+        for (const problem of problems) {
+            problem.topics = getTopicsStmt.all(problem.id) as Topic[];
+        }
+
+        return problems;
+    }
+
+    static groupByDifficulty(): ChartSegment[] {
+        const total = Math.max(
+            (getProblemCountStmt.get() as { total: number }).total,
+            1
+        );
+
+        return groupByDifficultyStmt.all(total) as ChartSegment[];
+    }
+
+    static groupByTopic(): ChartSegment[] {
+        const total = Math.max(
+            (getProblemCountStmt.get() as { total: number }).total,
+            1
+        );
+
+        return groupByTopicStmt.all(total) as ChartSegment[];
+    }
+
+    static getAverageRuntime(): number {
+        const result = averageRuntimeStmt.get() as {
+            average: number | null;
+        };
+
+        return result.average ?? 0;
+    }
+
+    static getAverageMemory(): number {
+        const result = averageMemoryStmt.get() as {
+            average: number | null;
+        };
+
+        return result.average ?? 0;
     }
 }
