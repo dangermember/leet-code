@@ -9,6 +9,8 @@ interface ProblemCardProps {
 export default function ProblemCard({
     problem
 }: Readonly<ProblemCardProps>) {
+    const runtime = problem.solutions.reduce((max, item) => item.runtime !== null ? Math.max(max, item.runtime) : max, 0);
+    const memory = problem.solutions.reduce((max, item) => item.memory !== null ? Math.max(max, item.memory) : max, 0);
     return (
         <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/20">
             <div className="mb-4 flex items-start justify-between gap-4">
@@ -23,14 +25,14 @@ export default function ProblemCard({
                 <div className="space-y-2 text-right text-sm text-slate-400">
                     <span title='runtime score' className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
                         <Clock className="size-4" />
-                        {problem.runtime != null
-                            ? `${problem.runtime} %`
+                        {runtime != null
+                            ? `${runtime} %`
                             : '—'}
                     </span>
                     <span title='memory score' className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
                         <Cpu className="size-4" />
-                        {problem.memory != null
-                            ? `${problem.memory} %`
+                        {memory != null
+                            ? `${memory} %`
                             : '—'}
                     </span>
                 </div>
@@ -39,7 +41,7 @@ export default function ProblemCard({
                 {problem.description}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <SolutionModal problem={problem} />
+                <SolutionModal problem={problem} runtime={runtime} memory={memory} />
                 <a
                     href={problem.url}
                     target="_blank"

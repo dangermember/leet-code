@@ -4,11 +4,15 @@ import { Clock, Cpu } from 'lucide-react';
 import { useState } from 'react';
 
 interface SolutionModalProps {
-    problem: Problem
+    problem: Problem,
+    runtime: number,
+    memory: number
 }
 
 export default function SolutionModal({
-    problem
+    problem,
+    runtime,
+    memory
 }: Readonly<SolutionModalProps>) {
     const [open, setOpen] = useState(false);
     return <>
@@ -35,20 +39,25 @@ export default function SolutionModal({
                             className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-2"
                         >
                             <Clock className="size-4" />
-                            {problem.runtime != null ? `${problem.runtime} %` : '—'}
+                            {runtime != null ? `${runtime} %` : '—'}
                         </span>
                         <span
                             title='memory score'
                             className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-2"
                         >
                             <Cpu className="size-4" />
-                            {problem.memory != null ? `${problem.memory} %` : '—'}
+                            {memory != null ? `${memory} %` : '—'}
                         </span>
                     </div>
                 </div>
-                <pre className="max-h-[60vh] overflow-auto rounded-3xl bg-slate-900/80 p-5 text-sm leading-6 text-slate-100">
-                    {problem.solution}
-                </pre>
+                {problem.solutions.map((solution) => <div key={solution.id}>
+                    <div>{solution.language}</div>
+                    <pre className="max-h-[60vh] overflow-auto rounded-3xl bg-slate-900/80 p-5 text-sm leading-6 text-slate-100">
+                        {solution?.solution ?? 'No solutions available for this problem yet.'}
+                    </pre>
+                </div>
+                )
+                }
                 <div className="mt-6 text-right">
                     <button
                         onClick={() => setOpen(false)}
