@@ -27,7 +27,8 @@ export class DatabaseProvider {
 
     static getInstance(): DatabaseConnection {
         if (!this.instance) {
-            throw new Error("Database connection has not been initialized");
+            const provider = process.env.DB_PROVIDER ?? "sqlite";
+            this.instance = DatabaseAdapterFactory.create(provider);
         }
 
         return this.instance;
