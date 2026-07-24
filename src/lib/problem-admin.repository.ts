@@ -152,6 +152,71 @@ export class ProblemAdminRepository {
         return this.saveSolution(payload);
     }
 
+    static getSolutionsForProblem(problemId: number) {
+        return DatabaseProvider.getInstance()
+            .prepare(`
+                SELECT *
+                FROM solutions
+                WHERE problem_id = ?
+                ORDER BY created_at DESC, id DESC
+            `)
+            .all(problemId);
+    }
+
+    static getSolutionById(id: number) {
+        return DatabaseProvider.getInstance()
+            .prepare(`
+                SELECT *
+                FROM solutions
+                WHERE id = ?
+            `)
+            .get(id);
+    }
+
+    static updateSolution(payload: {
+        id: number;
+        language: string;
+        solution: string;
+        runtime: number | null;
+        memory: number | null;
+        majorVersion: number | null;
+        minorVersion: number | null;
+        patchVersion: number | null;
+        submitted: boolean;
+    }) {
+        return DatabaseProvider.getInstance()
+            .prepare(`
+                UPDATE solutions
+                SET language = ?,
+                    solution = ?,
+                    runtime = ?,
+                    memory = ?,
+                    major_version = ?,
+                    minor_version = ?,
+                    patch_version = ?,
+                    submitted = ?,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+            `)
+            .run(
+                payload.language,
+                payload.solution,
+                payload.runtime,
+                payload.memory,
+                payload.majorVersion,
+                payload.minorVersion,
+                payload.patchVersion,
+                payload.submitted ? 1 : 0,
+                payload.id
+            );
+    }
+
+    static deleteSolution(id: number) {
+        return DatabaseProvider.getInstance()
+            .prepare(`DELETE FROM solutions WHERE id = ?`)
+            .run(id);
+    }
+
     static deleteProblem(id: number) {
         return DatabaseProvider.getInstance()
             .prepare(`DELETE FROM problems WHERE id = ?`)

@@ -125,3 +125,72 @@ export async function deleteProblemAction(formData: FormData) {
     revalidatePath("/dashboard");
     redirect("/dashboard");
 }
+
+export async function addSolutionAction(formData: FormData) {
+    const problemId = Number(formData.get("problem_id") ?? 0);
+    if (!problemId) {
+        throw new Error("Missing problem_id");
+    }
+
+    const { ProblemAdminRepository } = await import("@/lib/problem-admin.repository");
+
+    ProblemAdminRepository.createSolution({
+        problemId,
+        language: formData.get("language")?.toString() ?? "Python3",
+        solution: formData.get("solution")?.toString() ?? "",
+        runtime: formData.get("runtime") ? Number(formData.get("runtime")) : null,
+        memory: formData.get("memory") ? Number(formData.get("memory")) : null,
+        majorVersion: formData.get("major_version") ? Number(formData.get("major_version")) : null,
+        minorVersion: formData.get("minor_version") ? Number(formData.get("minor_version")) : null,
+        patchVersion: formData.get("patch_version") ? Number(formData.get("patch_version")) : null,
+        submitted: formData.get("submitted") === "on" || formData.get("submitted") === "true" || true,
+    });
+
+    revalidatePath(`/dashboard/problems/${problemId}/solutions`);
+    revalidatePath("/dashboard");
+    redirect(`/dashboard/problems/${problemId}/solutions`);
+}
+
+export async function updateSolutionByIdAction(formData: FormData) {
+    const id = Number(formData.get("id") ?? 0);
+    const problemId = Number(formData.get("problem_id") ?? 0);
+
+    if (!id || !problemId) {
+        throw new Error("Missing id or problem_id");
+    }
+
+    const { ProblemAdminRepository } = await import("@/lib/problem-admin.repository");
+
+    ProblemAdminRepository.updateSolution({
+        id,
+        language: formData.get("language")?.toString() ?? "Python3",
+        solution: formData.get("solution")?.toString() ?? "",
+        runtime: formData.get("runtime") ? Number(formData.get("runtime")) : null,
+        memory: formData.get("memory") ? Number(formData.get("memory")) : null,
+        majorVersion: formData.get("major_version") ? Number(formData.get("major_version")) : null,
+        minorVersion: formData.get("minor_version") ? Number(formData.get("minor_version")) : null,
+        patchVersion: formData.get("patch_version") ? Number(formData.get("patch_version")) : null,
+        submitted: formData.get("submitted") === "on" || formData.get("submitted") === "true",
+    });
+
+    revalidatePath(`/dashboard/problems/${problemId}/solutions`);
+    revalidatePath("/dashboard");
+    redirect(`/dashboard/problems/${problemId}/solutions`);
+}
+
+export async function deleteSolutionByIdAction(formData: FormData) {
+    const id = Number(formData.get("id") ?? 0);
+    const problemId = Number(formData.get("problem_id") ?? 0);
+
+    if (!id || !problemId) {
+        throw new Error("Missing id or problem_id");
+    }
+
+    const { ProblemAdminRepository } = await import("@/lib/problem-admin.repository");
+
+    ProblemAdminRepository.deleteSolution(id);
+
+    revalidatePath(`/dashboard/problems/${problemId}/solutions`);
+    revalidatePath("/dashboard");
+    redirect(`/dashboard/problems/${problemId}/solutions`);
+}

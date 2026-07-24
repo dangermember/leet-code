@@ -18,7 +18,9 @@ import {
     Layers,
     Tag,
     Check,
-    Copy
+    Copy,
+    GitFork,
+    FolderTree
 } from "lucide-react";
 
 interface ProblemMasterDetailProps {
@@ -161,11 +163,21 @@ export default function ProblemMasterDetail({ problems }: Readonly<ProblemMaster
                                             <Code2 className="size-3.5 text-slate-400" />
                                             {solCount} {solCount === 1 ? "solution" : "solutions"}
                                         </span>
-                                        {problem.topics && problem.topics.length > 0 && (
-                                            <span className="truncate max-w-[120px] text-[11px] text-slate-400">
-                                                {problem.topics.map((t) => t.name).join(", ")}
-                                            </span>
-                                        )}
+                                        <div className="flex items-center gap-2">
+                                            {problem.topics && problem.topics.length > 0 && (
+                                                <span className="truncate max-w-[100px] text-[11px] text-slate-400">
+                                                    {problem.topics.map((t) => t.name).join(", ")}
+                                                </span>
+                                            )}
+                                            <Link
+                                                href={`/dashboard/problems/${problem.id}/solutions`}
+                                                onClick={(e) => e.stopPropagation()}
+                                                title="Manage Solutions Tree"
+                                                className="rounded-lg border border-sky-500/20 bg-sky-500/10 p-1 text-sky-400 hover:bg-sky-500/20 hover:text-sky-200 transition"
+                                            >
+                                                <GitFork className="size-3.5" />
+                                            </Link>
+                                        </div>
                                     </div>
                                 </button>
                             );
@@ -222,6 +234,14 @@ export default function ProblemMasterDetail({ problems }: Readonly<ProblemMaster
                             {/* Actions */}
                             <div className="flex items-center gap-3 shrink-0">
                                 <Link
+                                    href={`/dashboard/problems/${selectedProblem.id}/solutions`}
+                                    title="Manage Solutions Tree"
+                                    className="inline-flex items-center gap-2 rounded-xl border border-sky-500/30 bg-sky-500/10 px-4 py-2 text-sm font-semibold text-sky-300 transition hover:bg-sky-500/20"
+                                >
+                                    <GitFork className="size-4" />
+                                    Solutions Tree
+                                </Link>
+                                <Link
                                     href={`/dashboard/problems/${selectedProblem.id}/edit`}
                                     className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-400"
                                 >
@@ -265,6 +285,13 @@ export default function ProblemMasterDetail({ problems }: Readonly<ProblemMaster
                                     <h3 className="text-lg font-semibold text-white">Solutions & Submissions</h3>
                                     <p className="text-xs text-slate-400">Master-detail view of solution code and performance statistics</p>
                                 </div>
+                                <Link
+                                    href={`/dashboard/problems/${selectedProblem.id}/solutions`}
+                                    className="inline-flex items-center gap-1.5 rounded-xl border border-sky-500/30 bg-sky-500/10 px-3.5 py-2 text-xs font-semibold text-sky-300 transition hover:bg-sky-500/20"
+                                >
+                                    <GitFork className="size-4 text-sky-400" />
+                                    Manage Solutions Tree
+                                </Link>
                             </div>
 
                             {selectedProblem.solutions && selectedProblem.solutions.length > 0 ? (
