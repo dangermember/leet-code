@@ -28,7 +28,7 @@ export default async function LoginPage({
         }
 
         const cookieStore = await cookies();
-        await setAdminSessionCookie(cookieStore);
+        await setAdminSessionCookie(cookieStore, username);
         redirect("/dashboard");
     }
 

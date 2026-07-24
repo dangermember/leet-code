@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { clearAdminSessionCookie, getCookieValue, setAdminSessionCookie, verifyCredentials } from "@/lib/admin-auth";
+import { clearAdminSessionCookie, setAdminSessionCookie, verifyCredentials } from "@/lib/admin-auth";
 
 function getBaseUrl() {
     return process.env.APP_URL ?? "http://localhost:3000";
@@ -49,7 +49,7 @@ export async function loginAction(formData: FormData) {
     }
 
     const cookieStore = await cookies();
-    await setAdminSessionCookie(cookieStore);
+    await setAdminSessionCookie(cookieStore, username);
     redirect("/dashboard");
 }
 

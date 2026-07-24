@@ -6,9 +6,19 @@ export function migrate() {
         DROP TABLE IF EXISTS solutions;
         DROP TABLE IF EXISTS topics;
         DROP TABLE IF EXISTS problems;
+        DROP TABLE IF EXISTS users;
 
         DELETE FROM sqlite_sequence
-        WHERE name IN ('problems', 'topics', 'solutions');
+        WHERE name IN ('problems', 'topics', 'solutions', 'users');
+
+        CREATE TABLE users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            role TEXT NOT NULL DEFAULT 'admin',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
 
         CREATE TABLE problems (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

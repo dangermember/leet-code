@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "migrate": "tsx scripts/migrate.ts",
-    "seed": "tsx scripts/seed-problems.ts"
+    "seed": "tsx scripts/seed-problems.ts",
+    "seed:users": "tsx scripts/seed-users.ts"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.1",

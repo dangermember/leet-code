@@ -1,14 +1,28 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
 
 const COOKIE_NAME = "leet-dashboard-session";
-const USERNAME = process.env.DASHBOARD_USERNAME ?? "admin";
-const PASSWORD = process.env.DASHBOARD_PASSWORD ?? "admin123";
 const SECRET = process.env.DASHBOARD_SESSION_SECRET ?? "leet-dashboard-secret";
 
+const getUserStmt = db.prepare(`
+    SELECT id, username, password, role
+    FROM users
+    WHERE username = ?
+    LIMIT 1
+`);
+
 export function verifyCredentials(username: string, password: string) {
-    return username === USERNAME && password === PASSWORD;
+    const user = getUserStmt.get(username) as
+        | { id: number; username: string; password: string; role: string }
+        | undefined;
+
+    if (!user) {
+        return false;
+    }
+
+    return user.password === password;
 }
 
 function createSignedPayload(payload: string) {
@@ -40,8 +54,8 @@ function verifySignedPayload(value: string) {
     return timingSafeEqual(expectedBuffer, providedBuffer);
 }
 
-export function createSessionCookieValue() {
-    return createSignedPayload(`${USERNAME}:${PASSWORD}`);
+export function createSessionCookieValue(username: string) {
+    return createSignedPayload(username);
 }
 
 export function verifySessionCookie(value: string | undefined) {
@@ -55,7 +69,7 @@ export function verifySessionCookie(value: string | undefined) {
 
     const [payload] = value.split(".");
 
-    return payload === `${USERNAME}:${PASSWORD}`;
+    return Boolean(payload);
 }
 
 export function getCookieValue(cookieHeader: string | null | undefined, name: string) {
@@ -80,8 +94,8 @@ export async function requireAdminSession() {
     }
 }
 
-export async function setAdminSessionCookie(cookieStore: Awaited<ReturnType<typeof cookies>>) {
-    cookieStore.set(COOKIE_NAME, createSessionCookieValue(), {
+export async function setAdminSessionCookie(cookieStore: Awaited<ReturnType<typeof cookies>>, username: string) {
+    cookieStore.set(COOKIE_NAME, createSessionCookieValue(username), {
         httpOnly: true,
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
