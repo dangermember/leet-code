@@ -1,5 +1,5 @@
 import { Problem } from '@/types/Problem';
-import { Clock, Cpu } from 'lucide-react';
+import { Cpu, MemoryStick } from 'lucide-react';
 import SolutionModal from './SolutionModal';
 
 interface ProblemCardProps {
@@ -24,13 +24,13 @@ export default function ProblemCard({
                 </div>
                 <div className="space-y-2 text-right text-sm text-slate-400">
                     <span title='runtime score' className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
-                        <Clock className="size-4" />
+                        <Cpu className="size-4" />
                         {runtime != null
                             ? `${runtime} %`
                             : '—'}
                     </span>
                     <span title='memory score' className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
-                        <Cpu className="size-4" />
+                        <MemoryStick className="size-4" />
                         {memory != null
                             ? `${memory} %`
                             : '—'}

@@ -1,6 +1,6 @@
 'use client'
 import { Problem } from '@/types/Problem';
-import { Clock, Cpu } from 'lucide-react';
+import { Cpu, MemoryStick } from 'lucide-react';
 import { useState } from 'react';
 
 interface SolutionModalProps {
@@ -38,26 +38,53 @@ export default function SolutionModal({
                         <span title='runtime score'
                             className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-2"
                         >
-                            <Clock className="size-4" />
+                            <Cpu className="size-4" />
                             {runtime != null ? `${runtime} %` : '—'}
                         </span>
                         <span
                             title='memory score'
                             className="inline-flex items-center gap-2 rounded-full bg-slate-800 px-3 py-2"
                         >
-                            <Cpu className="size-4" />
+                            <MemoryStick className="size-4" />
                             {memory != null ? `${memory} %` : '—'}
                         </span>
                     </div>
                 </div>
-                {problem.solutions.map((solution) => <div key={solution.id}>
-                    <div>{solution.language}</div>
-                    <pre className="max-h-[60vh] overflow-auto rounded-3xl bg-slate-900/80 p-5 text-sm leading-6 text-slate-100">
-                        {solution?.solution ?? 'No solutions available for this problem yet.'}
-                    </pre>
+                <div className="max-h-[70vh] space-y-6 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
+                    {problem.solutions.map((solution) => (
+                        <div
+                            key={solution.id}
+                            className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950/60 shadow-sm"
+                        >
+                            {/* Header */}
+                            <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/60 px-5 py-3">
+                                <div className="flex items-center gap-3">
+                                    <span className="rounded-md bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-400">
+                                        {solution.language}
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center gap-4 text-xs text-slate-400">
+                                    {solution.runtime !== null && (
+                                        <span className='flex gap-2' title='runtime score'><Cpu className="size-4" /> {solution.runtime} %</span>
+                                    )}
+
+                                    {solution.memory !== null && (
+                                        <span className='flex gap-2' title='memory score'><MemoryStick className="size-4" /> {solution.memory} %</span>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Code */}
+                            <pre className="max-h-[60vh] overflow-auto bg-slate-950 p-5 text-sm leading-7 text-slate-100 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
+                                <code>
+                                    {solution.solution ||
+                                        "No solutions available for this problem yet."}
+                                </code>
+                            </pre>
+                        </div>
+                    ))}
                 </div>
-                )
-                }
                 <div className="mt-6 text-right">
                     <button
                         onClick={() => setOpen(false)}
