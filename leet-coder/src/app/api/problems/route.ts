@@ -7,15 +7,9 @@ export async function GET(request: NextRequest) {
 
     const page = Number(searchParams.get("page") ?? "1");
     const perPage = Number(searchParams.get("perPage") ?? "20");
-
-    const difficulty =
-        searchParams.get("difficulty") ?? undefined;
-
-    const topic =
-        searchParams.get("topic") ?? undefined;
-
-    const search =
-        searchParams.get("search") ?? undefined;
+    const difficulty = searchParams.get("difficulty") ?? undefined;
+    const topic = searchParams.get("topic") ?? undefined;
+    const search = searchParams.get("search") ?? undefined;
 
     const result = ProblemRepository.paginate({
         page,
