@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-950`}
     >
       <body className="min-h-full flex flex-col">
         <div className="min-h-screen bg-slate-950 text-white">
