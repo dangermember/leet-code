@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { db } from "@/lib/database";
+import { db } from "@/lib/db";
 
 interface ProblemJson {
     number: number;

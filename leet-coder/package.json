@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "migrate": "tsx scripts/migrate.ts",
     "seed": "tsx scripts/seed-problems.ts"
   },
   "dependencies": {

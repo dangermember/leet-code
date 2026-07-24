@@ -1,4 +1,4 @@
-import { db } from "@/lib/database";
+import { db } from "@/lib/db";
 import type { Problem } from "@/types/Problem";
 import type { Topic } from "@/types/Topic";
 import type { Difficulty } from "@/types/Difficulty";
