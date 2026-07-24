@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import type { Problem } from "@/types/Problem";
 import type { Topic } from "@/types/Topic";
 import type { Difficulty } from "@/types/Difficulty";
+import type { Solution } from "@/types/Solution";
 import { ChartSegment } from "@/types/ChartSegment";
 
 interface GetProblemsOptions {
@@ -19,6 +20,13 @@ JOIN problem_topic pt
 ON pt.topic_id = t.id
 WHERE pt.problem_id = ?
 ORDER BY t.name
+`);
+
+const getSolutionsStmt = db.prepare(`
+SELECT *
+FROM solutions
+WHERE problem_id = ? and submitted = 1
+ORDER BY created_at DESC, id DESC
 `);
 
 const getProblemCountStmt = db.prepare(`
@@ -50,14 +58,14 @@ LIMIT 6
 
 const averageRuntimeStmt = db.prepare(`
 SELECT AVG(runtime) AS average
-FROM problems
-WHERE runtime > 0
+FROM solutions
+WHERE runtime > 0 and submitted = 1
 `);
 
 const averageMemoryStmt = db.prepare(`
 SELECT AVG(memory) AS average
-FROM problems
-WHERE memory > 0
+FROM solutions
+WHERE memory > 0 and submitted = 1
 `);
 
 export class ProblemRepository {
@@ -126,6 +134,7 @@ export class ProblemRepository {
 
         for (const problem of problems) {
             problem.topics = getTopicsStmt.all(problem.id) as Topic[];
+            problem.solutions = getSolutionsStmt.all(problem.id) as Solution[];
         }
 
         return {
@@ -150,6 +159,7 @@ export class ProblemRepository {
 
         for (const problem of problems) {
             problem.topics = getTopicsStmt.all(problem.id) as Topic[];
+            problem.solutions = getSolutionsStmt.all(problem.id) as Solution[];
         }
 
         return problems;
