@@ -1,13 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import { db } from "@/lib/db";
+import { Solution } from "@/types/Solution";
 
 interface ProblemJson {
     number: number;
     url: string;
     title: string;
     description: string;
-    solution: string;
+    solutions: Solution[];
     runtime: string | null;
     memory: string | null;
     difficulty: "Easy" | "Medium" | "Hard";
@@ -20,9 +21,6 @@ INSERT INTO problems (
     url,
     title,
     description,
-    solution,
-    runtime,
-    memory,
     difficulty
 )
 VALUES (
@@ -30,10 +28,32 @@ VALUES (
     @url,
     @title,
     @description,
+    @difficulty
+)
+`);
+
+const insertSolution = db.prepare(`
+INSERT INTO solutions (
+    problem_id,
+    language,
+    solution,
+    runtime,
+    memory,
+    major_version,
+    minor_version,
+    patch_version,
+    submitted
+)
+VALUES (
+    @problem_id,
+    @language,
     @solution,
     @runtime,
     @memory,
-    @difficulty
+    @major_version,
+    @minor_version,
+    @patch_version,
+    @submitted
 )
 `);
 
@@ -68,11 +88,12 @@ const seed = db.transaction(() => {
     ) as ProblemJson[];
     db.exec(`
         DELETE FROM problem_topic;
+        DELETE FROM solutions;
         DELETE FROM topics;
         DELETE FROM problems;
 
         DELETE FROM sqlite_sequence
-        WHERE name IN ('problems', 'topics');
+        WHERE name IN ('problems', 'topics', 'solutions');
     `);
 
     for (const problem of problems) {
@@ -81,14 +102,24 @@ const seed = db.transaction(() => {
             url: problem.url,
             title: problem.title,
             description: problem.description,
-            solution: problem.solution,
-            runtime: problem.runtime,
-            memory: problem.memory,
             difficulty: problem.difficulty,
         });
 
         const problemId = Number(result.lastInsertRowid);
 
+        for (const solution of problem.solutions ?? []) {
+            insertSolution.run({
+                problem_id: problemId,
+                language: solution.language,
+                solution: solution.solution,
+                runtime: solution.runtime,
+                memory: solution.memory,
+                major_version: solution.major_version,
+                minor_version: solution.minor_version,
+                patch_version: solution.patch_version,
+                submitted: solution.submitted ? 1 : 0,
+            });
+        }
         for (const topicName of problem.topicNames ?? []) {
             let topic = findTopic.get(topicName) as
                 | { id: number }
