@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { DatabaseProvider } from "@/lib/database";
 
 export interface UserRecord {
     id: number;
@@ -9,7 +9,7 @@ export interface UserRecord {
 
 export class UserRepository {
     static getByUsername(username: string): UserRecord | undefined {
-        return db
+        return DatabaseProvider.getInstance()
             .prepare(`
                 SELECT id, username, password, role
                 FROM users
@@ -20,7 +20,7 @@ export class UserRepository {
     }
 
     static create(username: string, password: string, role = "admin") {
-        return db
+        return DatabaseProvider.getInstance()
             .prepare(`
                 INSERT INTO users (username, password, role)
                 VALUES (?, ?, ?)

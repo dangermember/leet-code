@@ -1,14 +1,11 @@
-import Database from "better-sqlite3";
-import path from "node:path";
-import fs from "node:fs";
+import { DatabaseAdapterFactory, DatabaseProvider } from "@/lib/database";
 
-const dbDir = path.join(process.cwd(), "data");
+// Import the registry so built-in adapters are registered
+import "@/lib/adapter-registry";
 
-if (!fs.existsSync(dbDir)) {
-    fs.mkdirSync(dbDir, { recursive: true });
-}
+const provider = process.env.DB_PROVIDER ?? "sqlite";
 
-export const db = new Database(path.join(dbDir, "leetcode.db"));
+export const db = DatabaseAdapterFactory.create(provider);
+DatabaseProvider.setInstance(db);
 
-db.pragma("journal_mode = WAL");
-db.pragma("foreign_keys = ON");
+export const connection = DatabaseProvider.getInstance();

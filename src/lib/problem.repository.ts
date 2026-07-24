@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { DatabaseProvider } from "@/lib/database";
 import type { Problem } from "@/types/Problem";
 import type { Topic } from "@/types/Topic";
 import type { Difficulty } from "@/types/Difficulty";
@@ -13,62 +13,50 @@ interface GetProblemsOptions {
     search?: string;
 }
 
-const getTopicsStmt = db.prepare(`
-SELECT t.*
-FROM topics t
-JOIN problem_topic pt
-ON pt.topic_id = t.id
-WHERE pt.problem_id = ?
-ORDER BY t.name
-`);
-
-const getSolutionsStmt = db.prepare(`
-SELECT *
-FROM solutions
-WHERE problem_id = ? and submitted = 1
-ORDER BY created_at DESC, id DESC
-`);
-
-const getProblemCountStmt = db.prepare(`
-SELECT COUNT(*) AS total
-FROM problems
-`);
-
-const groupByDifficultyStmt = db.prepare(`
-SELECT
-    difficulty AS label,
-    COUNT(*) * 100.0 / ? AS value
-FROM problems
-GROUP BY difficulty
-ORDER BY value DESC, label
-LIMIT 6
-`);
-
-const groupByTopicStmt = db.prepare(`
-SELECT
-    t.name AS label,
-    COUNT(pt.problem_id) * 100.0 / ? AS value
-FROM topics t
-JOIN problem_topic pt
-    ON pt.topic_id = t.id
-GROUP BY t.name
-ORDER BY value DESC, label
-LIMIT 6
-`);
-
-const averageRuntimeStmt = db.prepare(`
-SELECT AVG(runtime) AS average
-FROM solutions
-WHERE runtime > 0 and submitted = 1
-`);
-
-const averageMemoryStmt = db.prepare(`
-SELECT AVG(memory) AS average
-FROM solutions
-WHERE memory > 0 and submitted = 1
-`);
-
 export class ProblemRepository {
+    private static get db() {
+        return DatabaseProvider.getInstance();
+    }
+
+    private static getTopicsForProblem(problemId: number): Topic[] {
+        return this.db
+            .prepare(`
+                SELECT t.*
+                FROM topics t
+                JOIN problem_topic pt
+                ON pt.topic_id = t.id
+                WHERE pt.problem_id = ?
+                ORDER BY t.name
+            `)
+            .all(problemId) as Topic[];
+    }
+
+    private static getSolutionsForProblem(problemId: number): Solution[] {
+        return this.db
+            .prepare(`
+                SELECT *
+                FROM solutions
+                WHERE problem_id = ? and submitted = 1
+                ORDER BY created_at DESC, id DESC
+            `)
+            .all(problemId) as Solution[];
+    }
+
+    private static enrichProblems(problems: Problem[]): void {
+        for (const problem of problems) {
+            problem.topics = this.getTopicsForProblem(problem.id);
+            problem.solutions = this.getSolutionsForProblem(problem.id);
+        }
+    }
+
+    private static getProblemCount(): number {
+        const result = this.db
+            .prepare(`SELECT COUNT(*) AS total FROM problems`)
+            .get() as { total: number };
+
+        return result.total;
+    }
+
     static paginate({
         page = 1,
         perPage = 20,
@@ -113,7 +101,7 @@ export class ProblemRepository {
                 ? `WHERE ${where.join(" AND ")}`
                 : "";
 
-        const total = db
+        const total = this.db
             .prepare(`
                 SELECT COUNT(*) as total
                 FROM problems p
@@ -121,7 +109,7 @@ export class ProblemRepository {
             `)
             .get(...params) as { total: number };
 
-        const problems = db
+        const problems = this.db
             .prepare(`
                 SELECT *
                 FROM problems p
@@ -132,10 +120,7 @@ export class ProblemRepository {
             `)
             .all(...params, perPage, offset) as Problem[];
 
-        for (const problem of problems) {
-            problem.topics = getTopicsStmt.all(problem.id) as Topic[];
-            problem.solutions = getSolutionsStmt.all(problem.id) as Solution[];
-        }
+        this.enrichProblems(problems);
 
         return {
             data: problems,
@@ -149,7 +134,7 @@ export class ProblemRepository {
     }
 
     static getAll(): Problem[] {
-        const problems = db
+        const problems = this.db
             .prepare(`
                 SELECT *
                 FROM problems
@@ -157,44 +142,65 @@ export class ProblemRepository {
             `)
             .all() as Problem[];
 
-        for (const problem of problems) {
-            problem.topics = getTopicsStmt.all(problem.id) as Topic[];
-            problem.solutions = getSolutionsStmt.all(problem.id) as Solution[];
-        }
+        this.enrichProblems(problems);
 
         return problems;
     }
 
     static groupByDifficulty(): ChartSegment[] {
-        const total = Math.max(
-            (getProblemCountStmt.get() as { total: number }).total,
-            1
-        );
+        const total = Math.max(this.getProblemCount(), 1);
 
-        return groupByDifficultyStmt.all(total) as ChartSegment[];
+        return this.db
+            .prepare(`
+                SELECT
+                    difficulty AS label,
+                    COUNT(*) * 100.0 / ? AS value
+                FROM problems
+                GROUP BY difficulty
+                ORDER BY value DESC, label
+                LIMIT 6
+            `)
+            .all(total) as ChartSegment[];
     }
 
     static groupByTopic(): ChartSegment[] {
-        const total = Math.max(
-            (getProblemCountStmt.get() as { total: number }).total,
-            1
-        );
+        const total = Math.max(this.getProblemCount(), 1);
 
-        return groupByTopicStmt.all(total) as ChartSegment[];
+        return this.db
+            .prepare(`
+                SELECT
+                    t.name AS label,
+                    COUNT(pt.problem_id) * 100.0 / ? AS value
+                FROM topics t
+                JOIN problem_topic pt
+                    ON pt.topic_id = t.id
+                GROUP BY t.name
+                ORDER BY value DESC, label
+                LIMIT 6
+            `)
+            .all(total) as ChartSegment[];
     }
 
     static getAverageRuntime(): number {
-        const result = averageRuntimeStmt.get() as {
-            average: number | null;
-        };
+        const result = this.db
+            .prepare(`
+                SELECT AVG(runtime) AS average
+                FROM solutions
+                WHERE runtime > 0 and submitted = 1
+            `)
+            .get() as { average: number | null };
 
         return result.average ?? 0;
     }
 
     static getAverageMemory(): number {
-        const result = averageMemoryStmt.get() as {
-            average: number | null;
-        };
+        const result = this.db
+            .prepare(`
+                SELECT AVG(memory) AS average
+                FROM solutions
+                WHERE memory > 0 and submitted = 1
+            `)
+            .get() as { average: number | null };
 
         return result.average ?? 0;
     }

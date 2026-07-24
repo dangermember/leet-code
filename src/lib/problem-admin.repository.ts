@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { DatabaseProvider } from "@/lib/database";
 
 export class ProblemAdminRepository {
     static createProblem(payload: {
@@ -8,7 +8,7 @@ export class ProblemAdminRepository {
         description: string;
         difficulty: string;
     }) {
-        return db
+        return DatabaseProvider.getInstance()
             .prepare(`
                 INSERT INTO problems (number, url, title, description, difficulty)
                 VALUES (?, ?, ?, ?, ?)
@@ -27,7 +27,7 @@ export class ProblemAdminRepository {
         patchVersion: number | null;
         submitted: boolean;
     }) {
-        return db
+        return DatabaseProvider.getInstance()
             .prepare(`
                 INSERT INTO solutions (
                     problem_id,
@@ -63,7 +63,7 @@ export class ProblemAdminRepository {
         description: string;
         difficulty: string;
     }) {
-        return db
+        return DatabaseProvider.getInstance()
             .prepare(`
                 UPDATE problems
                 SET number = ?,
@@ -92,7 +92,7 @@ export class ProblemAdminRepository {
     }
 
     static deleteProblem(id: number) {
-        return db
+        return DatabaseProvider.getInstance()
             .prepare(`DELETE FROM problems WHERE id = ?`)
             .run(id);
     }
