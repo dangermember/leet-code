@@ -1,5 +1,6 @@
 import { Problem } from '@/types/Problem';
 import { Clock, Cpu } from 'lucide-react';
+import SolutionModal from './SolutionModal';
 
 interface ProblemCardProps {
     problem: Problem;
@@ -9,7 +10,7 @@ export default function ProblemCard({
     problem
 }: Readonly<ProblemCardProps>) {
     return (
-        <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/20 transition hover:-translate-y-1 hover:border-sky-500/30 hover:bg-slate-900">
+        <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/20">
             <div className="mb-4 flex items-start justify-between gap-4">
                 <div>
                     <p className="text-sm font-semibold tracking-[0.18em] text-sky-300 uppercase">
@@ -20,13 +21,13 @@ export default function ProblemCard({
                     </h3>
                 </div>
                 <div className="space-y-2 text-right text-sm text-slate-400">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
+                    <span title='runtime score' className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
                         <Clock className="size-4" />
                         {problem.runtime != null
                             ? `${problem.runtime} %`
                             : '—'}
                     </span>
-                    <span className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
+                    <span title='memory score' className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1">
                         <Cpu className="size-4" />
                         {problem.memory != null
                             ? `${problem.memory} %`
@@ -38,12 +39,7 @@ export default function ProblemCard({
                 {problem.description}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <button
-                    type="button"
-                    className="inline-flex w-full items-center justify-center rounded-3xl bg-sky-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-400 sm:w-auto"
-                >
-                    Show solution
-                </button>
+                <SolutionModal problem={problem} />
                 <a
                     href={problem.url}
                     target="_blank"
