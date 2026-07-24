@@ -2,8 +2,8 @@ import { Sparkles } from 'lucide-react';
 
 interface HeroProps {
     totalSolved: number;
-    avgRuntime: string;
-    avgMemory: string;
+    avgRuntime: number;
+    avgMemory: number;
 }
 
 export default function Hero({
